@@ -1,0 +1,28 @@
+.RamVisualization {
+  padding: 2rem 6.25rem;
+
+  &__caption {
+    display: flex;
+  }
+
+  &__header {
+    color: #515e6b;
+    margin-bottom: 2.25rem;
+    margin-right: 1rem;
+  }
+  &__visualization {
+    display: flex;
+  }
+  &__visualizationSettings {
+    min-width: 15rem;
+  }
+  &__memory {
+    display: flex;
+  }
+  &__notes {
+    margin-top: 1.25rem;
+    font-size: 0.75rem;
+    color: #515e6b;
+    opacity: 0.7;
+  }
+}

@@ -1,0 +1,45 @@
+.Memory {
+  background: #e6f0ff;
+  padding: 20px;
+
+  &__header {
+    fill: #515e6b;
+    text-anchor: end; // TODO: check these rules for browser compatibility
+    dominant-baseline: middle; // TODO: check these rules for browser compatibility
+  }
+
+  &__cell {
+    fill: #bbbbbb;
+    transition: 0.35s;
+    &_inSelectedRow,
+    &_inSelectedColumn {
+      fill: #87cefa;
+    }
+    &_dirty {
+      fill: #8fbaff;
+    }
+    &_selected {
+      fill: #488dff;
+    }
+  }
+
+  &__cellAddress {
+    fill: #bbbbbb;
+    transition: 0.35s;
+    &_dirty {
+      fill: #8fbaff;
+    }
+    &_selected {
+      fill: #488dff;
+    }
+  }
+
+  &__addressLabel,
+  &__dataLabel {
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.875rem;
+    fill: white;
+    text-anchor: end; // TODO: check these rules for browser compatibility
+    dominant-baseline: middle; // TODO: check these rules for browser compatibility
+  }
+}

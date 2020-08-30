@@ -1,0 +1,88 @@
+.MemoryControls {
+  &__tacts {
+    display: block;
+    margin: 1rem 0;
+  }
+  &__tactsNumber {
+    width: 2rem;
+    margin-right: 0.5rem;
+  }
+
+  &__bitsWidth {
+    display: block;
+    color: #515e6b;
+    font-weight: 300;
+    opacity: 0.8;
+  }
+
+  &__enabledBlock,
+  &__readWriteBlock,
+  &__clockPinBlock,
+  &__addressBlock,
+  &__dataBlock {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__enabledLabel,
+  &__readWriteLabel,
+  &__clockLabel,
+  &__addressLabel,
+  &__dataLabel {
+    width: 10rem;
+    margin-right: 3rem;
+    padding: 8px 0;
+    line-height: 20px;
+    color: #515e6b;
+  }
+
+  &__enabledLabel,
+  &__read,
+  &__write {
+    cursor: pointer;
+    &_enabled {
+      font-weight: bold;
+    }
+  }
+
+  &__dataMode {
+    width: 5rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__currentTacts {
+    opacity: 0.7;
+    font-size: 0.875rem;
+  }
+
+  &__tactsNote {
+    opacity: 0.7;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  &__rasCas {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    text-transform: uppercase;
+  }
+
+  &__rasLabel,
+  &__casLabel {
+    margin-right: 0.5rem;
+    margin-bottom: 10px;
+    font-size: 0.75rem;
+    color: #515e6b;
+    text-transform: uppercase;
+    &_active {
+      border-top: 1px solid #515e6b;
+      font-weight: bold;
+    }
+  }
+
+  &__addressPins {
+    width: 160px;
+  }
+}

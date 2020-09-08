@@ -9,7 +9,7 @@ import Pins from "../PinsBlock";
 
 const b = BEM("MemoryControls");
 
-const DataControls = () => {
+const DataControls = ({ id }) => {
   const memoryState = useSelector(selectMemoryState);
   const datum = useSelector(selectData);
 
@@ -27,9 +27,8 @@ const DataControls = () => {
     <div className={b("dataBlock")}>
       <label className={b("dataLabel")}>
         <div className={b("dataMode")}>
-          <span className={b("dataModeLabel")}>{memoryState === MEMORY_MODE.WRITE ? "Input:" : "Output:"}</span>
+          <span className={b("dataModeLabel")}>{memoryState === MEMORY_MODE.WRITE ? "Input: " : "Output: "}</span>
           <span>
-            {" "}
             {datum} ({parseInt(datum, 2)})
           </span>
         </div>

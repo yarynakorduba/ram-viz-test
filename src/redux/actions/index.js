@@ -5,11 +5,12 @@ export const SET_PINS = "SET_PINS";
 // when row and column address are set separately
 export const SET_ADDRESS_ROW = "SET_ADDRESS_ROW";
 export const SET_ADDRESS_COLUMN = "SET_ADDRESS_COLUMN";
-export const TOGGLE_RAS_CAS_PART = "TOGGLE_RAS_CAS_PART";
 
 export const SET_MEMORY = "SET_MEMORY";
 export const SET_TACTS = "SET_TACTS";
 export const SET_CURRENT_TACTS = "SET_CURRENT_TACTS";
+
+export const TOGGLE_RAS_CAS = "TOGGLE_RAS_CAS";
 
 export const WRITE_DATUM_IN_MEMORY = "WRITE_DATUM_IN_MEMORY";
 export const READ_DATUM_FROM_MEMORY = "READ_DATUM_FROM_MEMORY";
@@ -19,11 +20,18 @@ export const SET_IS_TACTING_ENABLED = "SET_IS_TACTING_ENABLED";
 export const SET_IS_RAS_CAS_ENABLED = "SET_IS_RAS_CAS_ENABLED";
 export const SET_MEMORY_DISPLAY_TYPE = "SET_MEMORY_DISPLAY_TYPE";
 
+export const SET_SELECTED_ROW_IN_MEMORY = "SET_SELECTED_ROW_IN_MEMORY";
+export const SET_SELECTED_COL_IN_MEMORY = "SET_SELECTED_COL_IN_MEMORY";
+export const SET_SELECTED_ADDRESS_IN_MEMORY = "SET_SELECTED_ADDRESS_IN_MEMORY";
+
 export const setPins = (type, value) => ({ type: SET_PINS, payload: { type, value } });
 
-export const setAddressRow = (value) => ({ type: SET_ADDRESS_ROW, payload: value });
-export const setAddressColumn = (value) => ({ type: SET_ADDRESS_COLUMN, payload: value });
-export const toggleRasCasPart = () => ({ type: TOGGLE_RAS_CAS_PART });
+export const setRas = (value) => ({ type: SET_ADDRESS_ROW, payload: value });
+export const setCas = (value) => ({ type: SET_ADDRESS_COLUMN, payload: value });
+
+export const setAddressRowInMemory = (value) => ({ type: SET_SELECTED_ROW_IN_MEMORY, payload: value });
+export const setAddressColumnInMemory = (value) => ({ type: SET_SELECTED_COL_IN_MEMORY, payload: value });
+export const setSelectedAddressInMemory = (value) => ({ type: SET_SELECTED_ADDRESS_IN_MEMORY, payload: value });
 
 export const setPinsTypeWidth = (type, width) => ({ type: SET_PINS_WIDTH, payload: { type, width } });
 
@@ -66,3 +74,5 @@ export const setMemory = (data) => {
 
 export const setTacts = (numberOfTacts) => ({ type: SET_TACTS, payload: { tacts: numberOfTacts } });
 export const setCurrentTacts = (numberOfTacts) => ({ type: SET_CURRENT_TACTS, payload: { tacts: numberOfTacts } });
+
+export const toggleRasCas = () => ({ type: TOGGLE_RAS_CAS });

@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { useAction } from "../../hooks/reactRedux.hks";
 import {
   setIsPinNotationClassical,
   setIsTactingEnabled,
-  setTacts,
   setMemoryDisplayType,
   setIsRasCasEnabled,
+  setCurrentTacts,
 } from "../../redux/actions";
 import {
   selectIsPinNotationClassical,
@@ -29,14 +29,13 @@ const VisualizationSettings = () => {
 
   const setIsPinNotationClassicalAct = useAction(setIsPinNotationClassical);
   const setIsTactingEnabledAct = useAction(setIsTactingEnabled);
-  const setTactsAct = useAction(setTacts);
+  const setCurrentTactsAct = useAction(setCurrentTacts);
   const setMemoryDisplayTypeAct = useAction(setMemoryDisplayType);
   const setIsRasCasEnabledAct = useAction(setIsRasCasEnabled);
 
-  const handleTactingChange = (isEnabled) => {
-    setIsTactingEnabledAct(isEnabled);
-    if (!isEnabled) setTactsAct(0);
-  };
+  useEffect(() => {
+    if (!isTactingEnabled) setCurrentTactsAct(0);
+  }, [isTactingEnabled, setCurrentTactsAct]);
 
   const handleDisplayTypeChange = () => {
     const newDisplayType = memoryDisplayType === "matrix" ? "table" : "matrix";
@@ -59,7 +58,7 @@ const VisualizationSettings = () => {
           className={b("tactingInput")}
           type="checkbox"
           checked={isTactingEnabled}
-          onChange={() => handleTactingChange(!isTactingEnabled)}
+          onChange={() => setIsTactingEnabledAct(!isTactingEnabled)}
         />
         Tacting
       </label>

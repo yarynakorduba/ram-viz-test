@@ -12,7 +12,7 @@ const b = BEM("PinsBlock");
 const PIN_HEIGHT = 20;
 const PIN_LABEL_MARGIN = 3;
 
-const PinsBlock = ({ binaryData, setBinaryData }) => {
+const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
   const [binaryDataArray, setBinaryDataArray] = useState(`${binaryData}`.split(""));
   const classicalNotation = useSelector(selectIsPinNotationClassical);
 
@@ -23,6 +23,7 @@ const PinsBlock = ({ binaryData, setBinaryData }) => {
   }, [binaryData]);
 
   const handleDataPinClick = (pinIndex) => () => {
+    if (isDisabled) return;
     if (setBinaryData) {
       const updatedPinValue = Number(binaryDataArray[pinIndex]) === 0 ? "1" : "0";
       const updatedDataArray = update(pinIndex, updatedPinValue, binaryDataArray);

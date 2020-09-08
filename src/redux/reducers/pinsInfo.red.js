@@ -6,16 +6,15 @@ import {
   SET_CURRENT_TACTS,
   SET_ADDRESS_ROW,
   SET_ADDRESS_COLUMN,
-  TOGGLE_RAS_CAS_PART,
+  TOGGLE_RAS_CAS,
 } from "../actions";
 import { MEMORY_MODE, MEMORY_STATE } from "../../helpers/consts";
 
 const initialState = {
   address: "0000",
-  ras: "00",
-  cas: "00",
+  ras: "0",
+  cas: "0",
   addressWidth: 4,
-  currentAddressPart: "ras",
   data: "0000",
   dataWidth: 4,
   enabled: MEMORY_STATE.ENABLED,
@@ -28,11 +27,6 @@ const initialState = {
 const pinsInfo = (state = initialState, action) => {
   const { payload } = action;
   switch (action.type) {
-    case TOGGLE_RAS_CAS_PART:
-      return {
-        ...state,
-        currentAddressPart: state.currentAddressPart === "ras" ? "cas" : "ras",
-      };
     case SET_ADDRESS_ROW:
       return {
         ...state,
@@ -46,6 +40,9 @@ const pinsInfo = (state = initialState, action) => {
 
     case SET_PINS:
       return { ...state, [payload.type]: payload.value };
+
+    case TOGGLE_RAS_CAS:
+      return { ...state, ras: state.ras === "1" ? "0" : "1", cas: state.cas === "1" ? "0" : "1" };
 
     case SET_TACTS:
       return { ...state, tacts: payload.tacts, currentTacts: payload.tacts };
@@ -79,14 +76,15 @@ export const selectClock = (state) => path(["pinsInfo", "clock"], state);
 export const selectTacts = (state) => path(["pinsInfo", "tacts"], state);
 export const selectCurrentTacts = (state) => path(["pinsInfo", "currentTacts"], state);
 
+export const selectRas = (state) => path(["pinsInfo", "ras"], state);
+export const selectCas = (state) => path(["pinsInfo", "cas"], state);
+
 export const selectAddressRow = (isRasCasEnabled) => (state) => {
-  if (isRasCasEnabled) return path(["pinsInfo", "ras"], state);
+  // if (isRasCasEnabled) return path(["pinsInfo", "ras"], state);
   return compose((address) => take(Math.floor(address.length / 2), address), path(["pinsInfo", "address"]))(state);
 };
 
 export const selectAddressColumn = (isRasCasEnabled) => (state) => {
-  if (isRasCasEnabled) return path(["pinsInfo", "cas"], state);
+  // if (isRasCasEnabled) return path(["pinsInfo", "cas"], state);
   return compose((address) => takeLast(Math.ceil(address.length / 2), address), path(["pinsInfo", "address"]))(state);
 };
-
-export const selectCurrentAddressPart = (state) => path(["pinsInfo", "currentAddressPart"], state);

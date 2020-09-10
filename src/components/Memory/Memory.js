@@ -27,10 +27,16 @@ const Memory = () => {
 
   const [
     getCellCoordinates,
-    { cellWidth, cellHeight, cellMargin, verticalOffset: headerHeight, containerWidth, containerHeight },
+    getColCoordinates,
+    getRowCoordinates,
+    { cellWidth, cellHeight, cellMargin, verticalOffset: headerHeight, containerWidth, containerHeight, fontSize },
+    { rowWidth, rowHeight },
+    { colWidth, colHeight },
   ] = useMemoryCSSMeasures();
 
-  const [getCellOrder] = useCellOrder();
+  console.log("=== >", fontSize);
+
+  const [, { totalRows, totalColumns }] = useCellOrder();
 
   return (
     <svg x={0} y={0} style={{ minHeight: containerHeight, width: containerWidth }} className={b()}>
@@ -44,14 +50,10 @@ const Memory = () => {
           </text>
         </g>
         {memorizedInfo.map((cell, cellIndex) => {
-          const { row, column } = getCellOrder(cellIndex);
           const { cellX, cellY, textX, textY } = getCellCoordinates(cellIndex);
 
           const selectedAddressStyles =
             parseInt(selectedAddress, 2) === cellIndex && selectedAddress.length === addressWidth ? "selected" : "";
-          const selectedRowStyles = displayType === "matrix" && row === parseInt(selectedRow, 2) ? "inSelectedRow" : "";
-          const selectedColumnStyles =
-            displayType === "matrix" && column === parseInt(selectedColumn, 2) ? "inSelectedColumn" : "";
           const dirtyAddressStyles = cell.isDirty ? "dirty" : "";
 
           return (
@@ -76,18 +78,34 @@ const Memory = () => {
                   y={cellY}
                   width={cellWidth}
                   height={cellHeight}
-                  className={b("cell", [
-                    selectedAddressStyles,
-                    dirtyAddressStyles,
-                    selectedRowStyles,
-                    selectedColumnStyles,
-                  ])}
+                  className={b("cell", [selectedAddressStyles, dirtyAddressStyles])}
                 ></rect>
-                <text className={b("dataLabel")} x={textX} y={textY}>
+                <text className={b("dataLabel")} x={textX} y={textY} font-size={`${fontSize}px`}>
                   {cell.datum}
                 </text>
               </g>
             </g>
+          );
+        })}
+        {new Array(totalRows).fill("").map((r, index) => {
+          const { x, y } = getRowCoordinates(index);
+          const isRowSelected = displayType === "matrix" && index === parseInt(selectedRow, 2);
+          return (
+            <rect x={x} y={y} width={rowWidth} height={rowHeight} className={b("row", [isRowSelected && "selected"])} />
+          );
+        })}
+        {new Array(totalColumns).fill("").map((r, index) => {
+          const { x, y } = getColCoordinates(index);
+          const isColSelected = displayType === "matrix" && index === parseInt(selectedColumn, 2);
+
+          return (
+            <rect
+              x={x}
+              y={y}
+              width={colWidth}
+              height={colHeight}
+              className={b("column", [isColSelected && "selected"])}
+            />
           );
         })}
       </g>

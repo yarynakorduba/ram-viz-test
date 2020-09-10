@@ -1,14 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useAction } from "../../hooks/reactRedux.hks";
-import { setPinsTypeWidth, setPins, setRas, setCas } from "../../redux/actions";
+import { setPinsTypeWidth, setPins } from "../../redux/actions";
 import { selectAddress, selectAddressWidth, selectRas, selectCas } from "../../redux/reducers/pinsInfo.red";
 
 import BEM from "../../helpers/BEM";
 
 import Pins from "../PinsBlock";
 import { selectIsRasCasEnabled } from "../../redux/reducers/visualizationSettings.red";
-import { useRasCas, useToggleRasCas } from "../../hooks";
+import { useToggleRasCas } from "../../hooks";
 
 const b = BEM("MemoryControls");
 
@@ -38,9 +38,9 @@ export const AddressControls = () => {
         </div>
         <div className={b("bitsWidth")}>width: {addressLength} bits</div>
         <input
-          name="dataLength"
+          name="addressLength"
           type="range"
-          min={1}
+          min={2}
           max={8}
           defaultValue={addressLength}
           onInput={handleInputAddressLength}

@@ -1,6 +1,17 @@
 .Memory {
   background: #e6f0ff;
   padding: 20px;
+  overflow: visible;
+
+  &__row,
+  &__column {
+    fill: transparent;
+
+    &_selected {
+      stroke: #488dff;
+      stroke-width: 2px;
+    }
+  }
 
   &__header {
     fill: #515e6b;
@@ -11,10 +22,6 @@
   &__cell {
     fill: #bbbbbb;
     transition: 0.35s;
-    &_inSelectedRow,
-    &_inSelectedColumn {
-      fill: #87cefa;
-    }
     &_dirty {
       fill: #8fbaff;
     }
@@ -34,10 +41,12 @@
     }
   }
 
+  &__addressLabel {
+    font-size: 0.875rem;
+  }
   &__addressLabel,
   &__dataLabel {
     font-family: "Roboto Mono", monospace;
-    font-size: 0.875rem;
     fill: white;
     text-anchor: end; // TODO: check these rules for browser compatibility
     dominant-baseline: middle; // TODO: check these rules for browser compatibility

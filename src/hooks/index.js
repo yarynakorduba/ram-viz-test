@@ -19,8 +19,6 @@ import {
   selectMemoryState,
   selectTacts,
   selectCurrentTacts,
-  selectAddressRow,
-  selectAddressColumn,
   selectClock,
   selectRas,
   selectCas,
@@ -102,11 +100,13 @@ export const useCellOrder = () => {
     column: cellIndex % Math.pow(2, Math.floor(addressLength / 2)),
     row: Math.floor(cellIndex / Math.pow(2, Math.floor(addressLength / 2))),
   });
-  return [getCellOrder];
+
+  const totalColumns = Math.pow(2, Math.floor(addressLength / 2));
+  const totalRows = Math.floor(Math.pow(2, addressLength) / Math.pow(2, Math.floor(addressLength / 2)));
+  return [getCellOrder, { totalRows, totalColumns }];
 };
 
 // ---
-
 
 export const useTacting = () => {
   const setCurrentTactsAct = useAction(setCurrentTacts);

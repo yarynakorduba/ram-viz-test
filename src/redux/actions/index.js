@@ -1,6 +1,8 @@
 export const SET_PINS_WIDTH = "SET_PINS_WIDTH";
 export const SET_PINS = "SET_PINS";
 
+export const SET_CLOCK_PIN = "SET_CLOCK_PIN";
+
 // These actions are use for RAS / CAS mode,
 // when row and column address are set separately
 export const SET_ADDRESS_ROW = "SET_ADDRESS_ROW";
@@ -25,6 +27,8 @@ export const SET_SELECTED_COL_IN_MEMORY = "SET_SELECTED_COL_IN_MEMORY";
 export const SET_SELECTED_ADDRESS_IN_MEMORY = "SET_SELECTED_ADDRESS_IN_MEMORY";
 
 export const setPins = (type, value) => ({ type: SET_PINS, payload: { type, value } });
+
+export const setClockPin = (value) => ({ type: SET_CLOCK_PIN, payload: value });
 
 export const setRas = (value) => ({ type: SET_ADDRESS_ROW, payload: value });
 export const setCas = (value) => ({ type: SET_ADDRESS_COLUMN, payload: value });
@@ -72,7 +76,7 @@ export const setMemory = (data) => {
   };
 };
 
-export const setTacts = (numberOfTacts) => ({ type: SET_TACTS, payload: { tacts: numberOfTacts } });
-export const setCurrentTacts = (numberOfTacts) => ({ type: SET_CURRENT_TACTS, payload: { tacts: numberOfTacts } });
+export const setTacts = (numberOfTacts) => ({ type: SET_TACTS, payload: numberOfTacts });
+export const setCurrentTacts = (numberOfTacts) => ({ type: SET_CURRENT_TACTS, payload: numberOfTacts });
 
 export const toggleRasCas = () => ({ type: TOGGLE_RAS_CAS });

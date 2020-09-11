@@ -3,11 +3,11 @@ import {
   setMemory,
   setPins,
   setDatumInMemory,
-  setCurrentTacts,
   toggleRasCas,
   setSelectedAddressInMemory,
   setAddressColumnInMemory,
   setAddressRowInMemory,
+  setClockPin,
 } from "../redux/actions";
 import { useSelector } from "react-redux";
 import {
@@ -17,41 +17,17 @@ import {
   selectEnabled,
   selectData,
   selectMemoryState,
-  selectTacts,
   selectCurrentTacts,
   selectClock,
   selectRas,
-  selectCas,
 } from "../redux/reducers/pinsInfo.red";
-import {
-  selectMemory,
-  selectSelectedAddress,
-  selectSelectedRow,
-  selectSelectedColumn,
-} from "../redux/reducers/memory.red";
+import { selectMemory, selectSelectedAddress } from "../redux/reducers/memory.red";
 import { useEffect } from "react";
 import { compose } from "redux";
 import { map, take, takeLast } from "ramda";
 import { MEMORY_STATE, MEMORY_MODE, PINS, PIN_STATE } from "../helpers/consts";
-import { selectIsRasCasEnabled, selectIsTactingEnabled } from "../redux/reducers/visualizationSettings.red";
+import { selectIsRasCasEnabled } from "../redux/reducers/visualizationSettings.red";
 import { useRef } from "react";
-
-export const useToggleRasCas = () => {
-  const setPinsAct = useAction(setPins);
-  const toggleRasCasAct = useAction(toggleRasCas);
-  const isRasCasEnabled = useSelector(selectIsRasCasEnabled);
-  const currentTacts = useSelector(selectCurrentTacts);
-
-  useEffect(() => {
-    if (isRasCasEnabled) setPinsAct(PINS.RAS, PIN_STATE.ON);
-  }, [isRasCasEnabled, setPinsAct]);
-
-  useEffect(() => {
-    if (isRasCasEnabled && currentTacts === 0) {
-      toggleRasCasAct();
-    }
-  }, [currentTacts, toggleRasCasAct]);
-};
 
 export const useControlMemorySize = () => {
   const setMemoryAct = useAction(setMemory);
@@ -68,12 +44,28 @@ export const useControlMemorySize = () => {
         (memory) =>
           memory.fill({
             isDirty: false,
-            datum: (PIN_STATE.OFF).repeat(dataWidth),
+            datum: PIN_STATE.OFF.repeat(dataWidth),
           })
       )(new Array(Math.pow(2, addressWidth)));
     }
   }, [addressWidth, dataWidth, setMemoryAct]);
 };
+
+// This hook determines cell row and column order in matrix view
+export const useCellOrder = () => {
+  const addressLength = useSelector(selectAddressWidth);
+  const getCellOrder = (cellIndex) => ({
+    column: cellIndex % Math.pow(2, Math.floor(addressLength / 2)),
+    row: Math.floor(cellIndex / Math.pow(2, Math.floor(addressLength / 2))),
+  });
+
+  const totalColumns = Math.pow(2, Math.floor(addressLength / 2));
+  const totalRows = Math.floor(Math.pow(2, addressLength) / Math.pow(2, Math.floor(addressLength / 2)));
+  return [getCellOrder, { totalRows, totalColumns }];
+};
+// --
+
+// ---
 
 // This hook controlls memory datum width
 // Add adds zeros from the left to the datum, in case data width was increased
@@ -93,51 +85,27 @@ export const useControlMemoryDatumWidth = () => {
   }, [dataWidth, setMemoryAct]);
 };
 
-// This hook determines cell row and column order in matrix view
-export const useCellOrder = () => {
-  const addressLength = useSelector(selectAddressWidth);
-  const getCellOrder = (cellIndex) => ({
-    column: cellIndex % Math.pow(2, Math.floor(addressLength / 2)),
-    row: Math.floor(cellIndex / Math.pow(2, Math.floor(addressLength / 2))),
-  });
-
-  const totalColumns = Math.pow(2, Math.floor(addressLength / 2));
-  const totalRows = Math.floor(Math.pow(2, addressLength) / Math.pow(2, Math.floor(addressLength / 2)));
-  return [getCellOrder, { totalRows, totalColumns }];
-};
-
-// ---
-
 export const useTacting = () => {
-  const setCurrentTactsAct = useAction(setCurrentTacts);
-  const setPinsAct = useAction(setPins);
-
-  const tacts = useSelector(selectTacts);
-  const clock = useSelector(selectClock);
-  const isTactingEnabled = useSelector(selectIsTactingEnabled);
-  const currentTacts = useSelector(selectCurrentTacts);
   const toggleRasCasAct = useAction(toggleRasCas);
+  // const setCurrentTactsAct = useAction(setCurrentTacts);
+  const setClockPinAct = useAction(setClockPin);
+  const clock = useSelector(selectClock);
+  const currentTacts = useSelector(selectCurrentTacts);
+
   // reset clock pin to 0 state after a small timeout
   const resetClockTimeout = useRef(null);
   useEffect(() => {
-    if (clock === PIN_STATE.ON)
+    if (clock === PIN_STATE.ON) {
       resetClockTimeout.current = setTimeout(() => {
-        setPinsAct(PINS.CLOCK, PIN_STATE.OFF);
+        setClockPinAct(PIN_STATE.OFF);
       }, 500);
+    }
     return () => clearTimeout(resetClockTimeout.current);
-  }, [clock, currentTacts, setPinsAct, toggleRasCasAct]);
-
-  // reset current tacts to default tacts number, if current tacts number reached 0
-  useEffect(() => {
-    console.log("==!@#= > ", isTactingEnabled);
-    if (isTactingEnabled && !currentTacts && clock === PIN_STATE.OFF) setCurrentTactsAct(tacts);
-    // else if (!isTactingEnabled) setCurrentTactsAct(0);
-  }, [isTactingEnabled, tacts, currentTacts, clock, setCurrentTactsAct]);
+  }, [clock, currentTacts, setClockPinAct, toggleRasCasAct]);
 
   const handleSetClock = () => {
     if (currentTacts > 0) {
-      setPinsAct(PINS.CLOCK, PIN_STATE.ON);
-      setCurrentTactsAct(currentTacts - 1);
+      setClockPinAct(PIN_STATE.ON);
     }
   };
 
@@ -155,28 +123,18 @@ export const useReadWriteMemoryDatum = () => {
   const addressWidth = useSelector(selectAddressWidth);
   const dataWidth = useSelector(selectDataWidth);
   const selectedAddressInMemory = useSelector(selectSelectedAddress);
-  const selectedRowInMemory = useSelector(selectSelectedRow);
-  const selectedColInMemory = useSelector(selectSelectedColumn);
   const enabled = useSelector(selectEnabled);
   const datum = useSelector(selectData);
   const memoryState = useSelector(selectMemoryState);
   const currentTacts = useSelector(selectCurrentTacts);
   const isRasCasEnabled = useSelector(selectIsRasCasEnabled);
   const ras = useSelector(selectRas);
-  const cas = useSelector(selectCas);
 
   const setDatum = (datum) => setPinsAct(PINS.DATA, datum);
 
   useEffect(() => {
-    console.log("=== > ", selectedColInMemory, selectedRowInMemory);
-    if (selectedRowInMemory && selectedColInMemory) {
-      setSelectedAddressInMemoryAct(`${selectedRowInMemory}${selectedColInMemory}`);
-    }
-  }, [selectedRowInMemory, selectedColInMemory, setSelectedAddressInMemoryAct]);
-
-  useEffect(() => {
     if (memoryState && currentTacts !== 0) {
-      setDatum((PIN_STATE.OFF).repeat(dataWidth));
+      setDatum(PIN_STATE.OFF.repeat(dataWidth));
     }
   }, [memoryState]);
 
@@ -186,8 +144,6 @@ export const useReadWriteMemoryDatum = () => {
       if (memoryState === MEMORY_MODE.WRITE) {
         setDatumInMemoryAct(datum, selectedAddressInMemory);
         setSelectedAddressInMemoryAct("");
-        setSelectedRowInMemoryAct("");
-        setSelectedColInMemoryAct("");
       }
     }
   }, [selectedAddressInMemory, datum, setDatumInMemoryAct, setSelectedColInMemoryAct, setSelectedRowInMemoryAct]);
@@ -198,27 +154,13 @@ export const useReadWriteMemoryDatum = () => {
       if (memoryState === MEMORY_MODE.READ) {
         setDatum(memorizedInfo[parseInt(address, 2)].datum);
         setSelectedAddressInMemoryAct("");
-        setSelectedRowInMemoryAct("");
-        setSelectedColInMemoryAct("");
       }
     }
-  }, [
-    memoryState,
-    memorizedInfo,
-    address,
-    selectedAddressInMemory,
-    datum,
-    setSelectedColInMemoryAct,
-    setSelectedRowInMemoryAct,
-  ]);
+  }, [memoryState, memorizedInfo, address, selectedAddressInMemory, datum]);
 
   // set selected address in memory
   useEffect(() => {
-    if (
-      enabled === MEMORY_STATE.ENABLED &&
-      // && memoryState === MEMORY_MODE.WRITE
-      currentTacts === 0
-    ) {
+    if (enabled === MEMORY_STATE.ENABLED && currentTacts === 0) {
       if (!isRasCasEnabled) {
         if (memoryState === MEMORY_MODE.WRITE) {
           setSelectedAddressInMemoryAct(address);
@@ -226,7 +168,7 @@ export const useReadWriteMemoryDatum = () => {
           setDatum(memorizedInfo[parseInt(address, 2)].datum);
         }
       } else {
-        if (ras === PIN_STATE.OFF) {
+        if (ras === PIN_STATE.ON) {
           setSelectedRowInMemoryAct(take(Math.ceil(addressWidth / 2), address));
         } else {
           setSelectedColInMemoryAct(takeLast(Math.floor(addressWidth / 2), address));

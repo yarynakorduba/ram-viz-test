@@ -7,13 +7,14 @@ import {
   SET_ADDRESS_ROW,
   SET_ADDRESS_COLUMN,
   TOGGLE_RAS_CAS,
+  SET_CLOCK_PIN,
 } from "../actions";
-import { MEMORY_MODE, MEMORY_STATE, PIN_STATE } from "../../helpers/consts";
+import { MEMORY_MODE, MEMORY_STATE, PIN_STATE, PINS } from "../../helpers/consts";
 
 const initialState = {
   address: PIN_STATE.OFF.repeat(4),
-  ras: PIN_STATE.OFF,
-  cas: PIN_STATE.OFF,
+  [PINS.RAS]: PIN_STATE.OFF,
+  [PINS.CAS]: PIN_STATE.OFF,
   addressWidth: 4,
   data: PIN_STATE.OFF.repeat(4),
   dataWidth: 4,
@@ -30,29 +31,35 @@ const pinsInfo = (state = initialState, action) => {
     case SET_ADDRESS_ROW:
       return {
         ...state,
-        ras: payload,
+        [PINS.RAS]: payload,
       };
     case SET_ADDRESS_COLUMN:
       return {
         ...state,
-        cas: payload,
+        [PINS.CAS]: payload,
+      };
+
+    case SET_CLOCK_PIN:
+      return {
+        ...state,
+        [PINS.CLOCK]: payload,
       };
 
     case SET_PINS:
       return { ...state, [payload.type]: payload.value };
 
-    case TOGGLE_RAS_CAS:
+    case TOGGLE_RAS_CAS: {
       return {
         ...state,
-        ras: state.ras === PIN_STATE.ON ? PIN_STATE.OFF : PIN_STATE.ON,
-        cas: state.cas === PIN_STATE.ON ? PIN_STATE.OFF : PIN_STATE.ON,
+        [PINS.RAS]: state[PINS.RAS] === PIN_STATE.ON ? PIN_STATE.OFF : PIN_STATE.ON,
+        [PINS.CAS]: state[PINS.CAS] === PIN_STATE.ON ? PIN_STATE.OFF : PIN_STATE.ON,
       };
-
+    }
     case SET_TACTS:
-      return { ...state, tacts: payload.tacts, currentTacts: payload.tacts };
+      return { ...state, tacts: payload.tacts, currentTacts: payload };
 
     case SET_CURRENT_TACTS:
-      return { ...state, currentTacts: payload.tacts };
+      return { ...state, currentTacts: payload };
 
     case SET_PINS_WIDTH: {
       const { type, width } = payload;
@@ -80,8 +87,8 @@ export const selectClock = (state) => path(["pinsInfo", "clock"], state);
 export const selectTacts = (state) => path(["pinsInfo", "tacts"], state);
 export const selectCurrentTacts = (state) => path(["pinsInfo", "currentTacts"], state);
 
-export const selectRas = (state) => path(["pinsInfo", "ras"], state);
-export const selectCas = (state) => path(["pinsInfo", "cas"], state);
+export const selectRas = (state) => path(["pinsInfo", PINS.RAS], state);
+export const selectCas = (state) => path(["pinsInfo", PINS.CAS], state);
 
 export const selectAddressRow = (isRasCasEnabled) => (state) => {
   // if (isRasCasEnabled) return path(["pinsInfo", "ras"], state);

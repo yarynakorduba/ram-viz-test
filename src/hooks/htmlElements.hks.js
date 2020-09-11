@@ -45,7 +45,7 @@ export const useMemoryCSSMeasures = () => {
     };
   };
 
-  const getRowPosition = (rowIndex) => console.log(rowIndex) || { x: 0, y: rowIndex * (cellHeight + cellMargin) };
+  const getRowPosition = (rowIndex) => ({ x: 0, y: rowIndex * (cellHeight + cellMargin) });
   const getColPosition = (colIndex) => ({ x: colIndex * (cellWidth + cellMargin), y: 0 });
   const widthForChar = cellWidth / dataLength;
   const MIN_FONT_SIZE = 13;

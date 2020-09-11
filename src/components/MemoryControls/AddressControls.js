@@ -8,7 +8,6 @@ import BEM from "../../helpers/BEM";
 
 import Pins from "../PinsBlock";
 import { selectIsRasCasEnabled } from "../../redux/reducers/visualizationSettings.red";
-import { useToggleRasCas } from "../../hooks";
 import { PINS, PIN_STATE } from "../../helpers/consts";
 
 const b = BEM("MemoryControls");
@@ -27,8 +26,6 @@ export const AddressControls = () => {
   const setAddress = (address) => setPinsAct(PINS.ADDRESS, address);
 
   const handleInputAddressLength = (ev) => setAddressLength(+ev.target.value);
-
-  useToggleRasCas();
 
   return (
     <div className={b("addressBlock")}>

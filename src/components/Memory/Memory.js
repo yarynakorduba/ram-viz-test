@@ -34,8 +34,6 @@ const Memory = () => {
     { colWidth, colHeight },
   ] = useMemoryCSSMeasures();
 
-  console.log("=== >", fontSize);
-
   const [, { totalRows, totalColumns }] = useCellOrder();
 
   return (

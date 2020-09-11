@@ -39,7 +39,7 @@
     fill: #515e6b;
     transform: translateX(30px);
 
-    &_enabled {
+    &_active {
       animation: emphasise 0.15s forwards;
       animation-direction: reverse;
     }

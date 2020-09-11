@@ -16,8 +16,6 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
   const [binaryDataArray, setBinaryDataArray] = useState(`${binaryData}`.split(""));
   const classicalNotation = useSelector(selectIsPinNotationClassical);
 
-  console.log("---binary data-- ", binaryData);
-
   useEffect(() => {
     if (binaryData) setBinaryDataArray(`${binaryData}`.split(""));
   }, [binaryData]);
@@ -48,7 +46,7 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
               <text
                 x={0}
                 y={id * PIN_HEIGHT + PIN_HEIGHT - PIN_LABEL_MARGIN}
-                className={b("pinLabel", [pin === "1" ? "enabled" : "disabled"])}
+                className={b("pinLabel", [pin === "1" && "active", isDisabled && "disabled"])}
               >
                 {pin}
               </text>

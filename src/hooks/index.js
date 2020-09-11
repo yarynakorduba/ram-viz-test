@@ -153,6 +153,7 @@ export const useReadWriteMemoryDatum = () => {
   const setDatumInMemoryAct = useAction(setDatumInMemory);
   const address = useSelector(selectAddress);
   const addressWidth = useSelector(selectAddressWidth);
+  const dataWidth = useSelector(selectDataWidth);
   const selectedAddressInMemory = useSelector(selectSelectedAddress);
   const selectedRowInMemory = useSelector(selectSelectedRow);
   const selectedColInMemory = useSelector(selectSelectedColumn);
@@ -173,21 +174,57 @@ export const useReadWriteMemoryDatum = () => {
     }
   }, [selectedRowInMemory, selectedColInMemory, setSelectedAddressInMemoryAct]);
 
+  useEffect(() => {
+    if (memoryState && currentTacts !== 0) {
+      setDatum("0".repeat(dataWidth));
+    }
+  }, [memoryState]);
+
   // update datum in memory if address is already selected
   useEffect(() => {
     if (selectedAddressInMemory) {
-      setDatumInMemoryAct(datum, selectedAddressInMemory);
-      setSelectedAddressInMemoryAct("");
-      setSelectedRowInMemoryAct("");
-      setSelectedColInMemoryAct("");
+      if (memoryState === MEMORY_MODE.WRITE) {
+        setDatumInMemoryAct(datum, selectedAddressInMemory);
+        setSelectedAddressInMemoryAct("");
+        setSelectedRowInMemoryAct("");
+        setSelectedColInMemoryAct("");
+      }
     }
   }, [selectedAddressInMemory, datum, setDatumInMemoryAct, setSelectedColInMemoryAct, setSelectedRowInMemoryAct]);
 
+  // update datum in memory if address is already selected
+  useEffect(() => {
+    if (selectedAddressInMemory) {
+      if (memoryState === MEMORY_MODE.READ) {
+        setDatum(memorizedInfo[parseInt(address, 2)].datum);
+        setSelectedAddressInMemoryAct("");
+        setSelectedRowInMemoryAct("");
+        setSelectedColInMemoryAct("");
+      }
+    }
+  }, [
+    memoryState,
+    memorizedInfo,
+    address,
+    selectedAddressInMemory,
+    datum,
+    setSelectedColInMemoryAct,
+    setSelectedRowInMemoryAct,
+  ]);
+
   // set selected address in memory
   useEffect(() => {
-    if (enabled === MEMORY_STATE.ENABLED && memoryState === MEMORY_MODE.WRITE && currentTacts === 0) {
+    if (
+      enabled === MEMORY_STATE.ENABLED &&
+      // && memoryState === MEMORY_MODE.WRITE
+      currentTacts === 0
+    ) {
       if (!isRasCasEnabled) {
-        setSelectedAddressInMemoryAct(address);
+        if (memoryState === MEMORY_MODE.WRITE) {
+          setSelectedAddressInMemoryAct(address);
+        } else {
+          setDatum(memorizedInfo[parseInt(address, 2)].datum);
+        }
       } else {
         if (ras === "1") {
           setSelectedRowInMemoryAct(take(Math.ceil(addressWidth / 2), address));
@@ -199,9 +236,9 @@ export const useReadWriteMemoryDatum = () => {
   }, [enabled, memoryState, address, datum, currentTacts, addressWidth, setDatumInMemoryAct]);
 
   // read datum from memory back into data output pin
-  useEffect(() => {
-    if (memorizedInfo[parseInt(address, 2)] && memoryState === MEMORY_MODE.READ) {
-      setDatum(memorizedInfo[parseInt(address, 2)].datum);
-    }
-  }, [memoryState, address]);
+  // useEffect(() => {
+  //   if (memorizedInfo[parseInt(address, 2)] && memoryState === MEMORY_MODE.READ && ) {
+  //     setDatum(memorizedInfo[parseInt(address, 2)].datum);
+  //   }
+  // }, [memoryState, address]);
 };

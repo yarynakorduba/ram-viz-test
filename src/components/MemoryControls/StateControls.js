@@ -5,7 +5,7 @@ import { useAction } from "../../hooks/reactRedux.hks";
 import { setPins } from "../../redux/actions";
 import { useSelector } from "react-redux";
 import { selectMemoryState, selectEnabled } from "../../redux/reducers/pinsInfo.red";
-import { MEMORY_MODE, MEMORY_STATE } from "../../helpers/consts";
+import { MEMORY_MODE, MEMORY_STATE, PINS } from "../../helpers/consts";
 
 const b = BEM("MemoryControls");
 
@@ -15,9 +15,9 @@ const StateControls = () => {
 
   const setPinsAct = useAction(setPins);
 
-  const setMemoryState = (readWrite) => setPinsAct("readWrite", readWrite);
+  const setMemoryState = (readWrite) => setPinsAct(PINS.READ_WRITE, readWrite);
   const setEnabled = () => {
-    setPinsAct("enabled", enabled === MEMORY_STATE.ENABLED ? MEMORY_STATE.DISABLED : MEMORY_STATE.ENABLED);
+    setPinsAct(PINS.ENABLED, enabled === MEMORY_STATE.ENABLED ? MEMORY_STATE.DISABLED : MEMORY_STATE.ENABLED);
   };
 
   return (

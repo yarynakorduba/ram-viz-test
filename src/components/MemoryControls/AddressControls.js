@@ -9,6 +9,7 @@ import BEM from "../../helpers/BEM";
 import Pins from "../PinsBlock";
 import { selectIsRasCasEnabled } from "../../redux/reducers/visualizationSettings.red";
 import { useToggleRasCas } from "../../hooks";
+import { PINS, PIN_STATE } from "../../helpers/consts";
 
 const b = BEM("MemoryControls");
 
@@ -22,8 +23,8 @@ export const AddressControls = () => {
   const setPinsAct = useAction(setPins);
   const setPinsWidthAct = useAction(setPinsTypeWidth);
 
-  const setAddressLength = (width) => setPinsWidthAct("address", width);
-  const setAddress = (address) => setPinsAct("address", address);
+  const setAddressLength = (width) => setPinsWidthAct(PINS.ADDRESS, width);
+  const setAddress = (address) => setPinsAct(PINS.ADDRESS, address);
 
   const handleInputAddressLength = (ev) => setAddressLength(+ev.target.value);
 
@@ -51,11 +52,11 @@ export const AddressControls = () => {
         {isRasCasEnabled && (
           <>
             <div className={b("ras")}>
-              <span className={b("rasLabel", [ras === "1" && "active"])}>ras</span>
+              <span className={b("rasLabel", [ras === PIN_STATE.ON && "active"])}>ras</span>
               <Pins binaryData={ras} isDisabled />
             </div>
             <div className={b("cas")}>
-              <span className={b("casLabel", [cas === "1" && "active"])}>cas</span>
+              <span className={b("casLabel", [cas === PIN_STATE.ON && "active"])}>cas</span>
               <Pins binaryData={cas} isDisabled />
             </div>
           </>

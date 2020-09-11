@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectIsPinNotationClassical } from "../../redux/reducers/visualizationSettings.red";
 
 import "./PinsBlock.scss";
+import { PIN_STATE } from "../../helpers/consts";
 
 const b = BEM("PinsBlock");
 
@@ -23,7 +24,7 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
   const handleDataPinClick = (pinIndex) => () => {
     if (isDisabled) return;
     if (setBinaryData) {
-      const updatedPinValue = Number(binaryDataArray[pinIndex]) === 0 ? "1" : "0";
+      const updatedPinValue = Number(binaryDataArray[pinIndex]) === 0 ? PIN_STATE.ON : PIN_STATE.OFF;
       const updatedDataArray = update(pinIndex, updatedPinValue, binaryDataArray);
       setBinaryDataArray(updatedDataArray);
       setBinaryData(updatedDataArray.join(""));
@@ -46,7 +47,7 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
               <text
                 x={0}
                 y={id * PIN_HEIGHT + PIN_HEIGHT - PIN_LABEL_MARGIN}
-                className={b("pinLabel", [pin === "1" && "active", isDisabled && "disabled"])}
+                className={b("pinLabel", [pin === PIN_STATE.ON && "active", isDisabled && "disabled"])}
               >
                 {pin}
               </text>

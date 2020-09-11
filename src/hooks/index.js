@@ -32,7 +32,7 @@ import {
 import { useEffect } from "react";
 import { compose } from "redux";
 import { map, take, takeLast } from "ramda";
-import { MEMORY_STATE, MEMORY_MODE } from "../helpers/consts";
+import { MEMORY_STATE, MEMORY_MODE, PINS, PIN_STATE } from "../helpers/consts";
 import { selectIsRasCasEnabled, selectIsTactingEnabled } from "../redux/reducers/visualizationSettings.red";
 import { useRef } from "react";
 
@@ -43,7 +43,7 @@ export const useToggleRasCas = () => {
   const currentTacts = useSelector(selectCurrentTacts);
 
   useEffect(() => {
-    if (isRasCasEnabled) setPinsAct("ras", "1");
+    if (isRasCasEnabled) setPinsAct(PINS.RAS, PIN_STATE.ON);
   }, [isRasCasEnabled, setPinsAct]);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export const useControlMemorySize = () => {
         (memory) =>
           memory.fill({
             isDirty: false,
-            datum: "0".repeat(dataWidth),
+            datum: (PIN_STATE.OFF).repeat(dataWidth),
           })
       )(new Array(Math.pow(2, addressWidth)));
     }
@@ -87,7 +87,7 @@ export const useControlMemoryDatumWidth = () => {
       setMemoryAct,
       map((cell) => ({
         ...cell,
-        datum: cell.datum.padStart(dataWidth, "0").slice(-dataWidth),
+        datum: cell.datum.padStart(dataWidth, PIN_STATE.OFF).slice(-dataWidth),
       }))
     )(memorizedInfo);
   }, [dataWidth, setMemoryAct]);
@@ -120,9 +120,9 @@ export const useTacting = () => {
   // reset clock pin to 0 state after a small timeout
   const resetClockTimeout = useRef(null);
   useEffect(() => {
-    if (clock === "1")
+    if (clock === PIN_STATE.ON)
       resetClockTimeout.current = setTimeout(() => {
-        setPinsAct("clock", "0");
+        setPinsAct(PINS.CLOCK, PIN_STATE.OFF);
       }, 500);
     return () => clearTimeout(resetClockTimeout.current);
   }, [clock, currentTacts, setPinsAct, toggleRasCasAct]);
@@ -130,13 +130,13 @@ export const useTacting = () => {
   // reset current tacts to default tacts number, if current tacts number reached 0
   useEffect(() => {
     console.log("==!@#= > ", isTactingEnabled);
-    if (isTactingEnabled && !currentTacts && clock === "0") setCurrentTactsAct(tacts);
+    if (isTactingEnabled && !currentTacts && clock === PIN_STATE.OFF) setCurrentTactsAct(tacts);
     // else if (!isTactingEnabled) setCurrentTactsAct(0);
   }, [isTactingEnabled, tacts, currentTacts, clock, setCurrentTactsAct]);
 
   const handleSetClock = () => {
     if (currentTacts > 0) {
-      setPinsAct("clock", "1");
+      setPinsAct(PINS.CLOCK, PIN_STATE.ON);
       setCurrentTactsAct(currentTacts - 1);
     }
   };
@@ -165,7 +165,7 @@ export const useReadWriteMemoryDatum = () => {
   const ras = useSelector(selectRas);
   const cas = useSelector(selectCas);
 
-  const setDatum = (datum) => setPinsAct("data", datum);
+  const setDatum = (datum) => setPinsAct(PINS.DATA, datum);
 
   useEffect(() => {
     console.log("=== > ", selectedColInMemory, selectedRowInMemory);
@@ -176,7 +176,7 @@ export const useReadWriteMemoryDatum = () => {
 
   useEffect(() => {
     if (memoryState && currentTacts !== 0) {
-      setDatum("0".repeat(dataWidth));
+      setDatum((PIN_STATE.OFF).repeat(dataWidth));
     }
   }, [memoryState]);
 
@@ -226,7 +226,7 @@ export const useReadWriteMemoryDatum = () => {
           setDatum(memorizedInfo[parseInt(address, 2)].datum);
         }
       } else {
-        if (ras === "1") {
+        if (ras === PIN_STATE.OFF) {
           setSelectedRowInMemoryAct(take(Math.ceil(addressWidth / 2), address));
         } else {
           setSelectedColInMemoryAct(takeLast(Math.floor(addressWidth / 2), address));
@@ -234,11 +234,4 @@ export const useReadWriteMemoryDatum = () => {
       }
     }
   }, [enabled, memoryState, address, datum, currentTacts, addressWidth, setDatumInMemoryAct]);
-
-  // read datum from memory back into data output pin
-  // useEffect(() => {
-  //   if (memorizedInfo[parseInt(address, 2)] && memoryState === MEMORY_MODE.READ && ) {
-  //     setDatum(memorizedInfo[parseInt(address, 2)].datum);
-  //   }
-  // }, [memoryState, address]);
 };

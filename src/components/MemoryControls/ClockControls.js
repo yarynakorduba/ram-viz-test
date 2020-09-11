@@ -7,6 +7,7 @@ import { selectClock, selectCurrentTacts } from "../../redux/reducers/pinsInfo.r
 import { useSelector } from "react-redux";
 import { selectTacts } from "../../redux/reducers/pinsInfo.red";
 import { useTacting } from "../../hooks";
+import { PIN_STATE } from "../../helpers/consts";
 
 const b = BEM("MemoryControls");
 
@@ -22,7 +23,7 @@ const ClockControls = () => {
     <div className={b("clockBlock")}>
       <div className={b("clockPinBlock")}>
         <label className={b("clockLabel")}>
-          <div onClick={handleClock} className={b("clock", [clock === "1" && "enabled"])}>
+          <div onClick={handleClock} className={b("clock", [clock === PIN_STATE.ON && "enabled"])}>
             Clock <span className={b("currentTacts")}>({currentTacts} tacts left)</span>
           </div>
           <div className={b("tacts")}>

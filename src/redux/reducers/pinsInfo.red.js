@@ -8,18 +8,18 @@ import {
   SET_ADDRESS_COLUMN,
   TOGGLE_RAS_CAS,
 } from "../actions";
-import { MEMORY_MODE, MEMORY_STATE } from "../../helpers/consts";
+import { MEMORY_MODE, MEMORY_STATE, PIN_STATE } from "../../helpers/consts";
 
 const initialState = {
-  address: "0000",
-  ras: "0",
-  cas: "0",
+  address: PIN_STATE.OFF.repeat(4),
+  ras: PIN_STATE.OFF,
+  cas: PIN_STATE.OFF,
   addressWidth: 4,
-  data: "0000",
+  data: PIN_STATE.OFF.repeat(4),
   dataWidth: 4,
   enabled: MEMORY_STATE.ENABLED,
   readWrite: MEMORY_MODE.WRITE,
-  clock: "0",
+  clock: PIN_STATE.OFF,
   tacts: 4,
   currentTacts: 0,
 };
@@ -42,7 +42,11 @@ const pinsInfo = (state = initialState, action) => {
       return { ...state, [payload.type]: payload.value };
 
     case TOGGLE_RAS_CAS:
-      return { ...state, ras: state.ras === "1" ? "0" : "1", cas: state.cas === "1" ? "0" : "1" };
+      return {
+        ...state,
+        ras: state.ras === PIN_STATE.ON ? PIN_STATE.OFF : PIN_STATE.ON,
+        cas: state.cas === PIN_STATE.ON ? PIN_STATE.OFF : PIN_STATE.ON,
+      };
 
     case SET_TACTS:
       return { ...state, tacts: payload.tacts, currentTacts: payload.tacts };

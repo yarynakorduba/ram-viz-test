@@ -3,7 +3,7 @@ import { useAction } from "../../hooks/reactRedux.hks";
 import { setPinsTypeWidth, setPins } from "../../redux/actions";
 import { useSelector } from "react-redux";
 import { selectData, selectDataWidth, selectMemoryState } from "../../redux/reducers/pinsInfo.red";
-import { MEMORY_MODE } from "../../helpers/consts";
+import { MEMORY_MODE, PINS } from "../../helpers/consts";
 import BEM from "../../helpers/BEM";
 import Pins from "../PinsBlock";
 
@@ -16,8 +16,8 @@ const DataControls = ({ id }) => {
   const setPinsAct = useAction(setPins);
   const setPinsWidthAct = useAction(setPinsTypeWidth);
 
-  const setDataLength = (width) => setPinsWidthAct("data", width);
-  const setDatum = (datum) => setPinsAct("data", datum);
+  const setDataLength = (width) => setPinsWidthAct(PINS.DATA, width);
+  const setDatum = (datum) => setPinsAct(PINS.DATA, datum);
 
   const dataLength = useSelector(selectDataWidth);
 

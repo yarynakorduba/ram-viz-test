@@ -14,8 +14,6 @@ import "./MemoryControls.scss";
 const b = BEM("MemoryControls");
 
 const MemoryControls = () => {
-  const isTactingEnabled = useSelector(selectIsTactingEnabled);
-
   useControlMemorySize();
   useControlMemoryDatumWidth();
   useReadWriteMemoryDatum();
@@ -25,7 +23,7 @@ const MemoryControls = () => {
       <DataControls />
       <AddressControls />
       <StateControls />
-      {isTactingEnabled && <ClockControls />}
+      <ClockControls />
     </span>
   );
 };

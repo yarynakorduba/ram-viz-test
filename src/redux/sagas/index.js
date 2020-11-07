@@ -11,6 +11,7 @@ import {
   setCurrentTacts,
   SET_CLOCK_PIN,
   SET_CURRENT_TACTS,
+  SET_IS_TACTING_ENABLED,
 } from "../actions";
 import { PINS, PIN_STATE } from "../../helpers/consts";
 import { selectSelectedRow } from "../reducers/memory.red";
@@ -26,9 +27,16 @@ function* resetAddressRowAndCol(data) {
 }
 
 function* enableRasCasPins(action) {
-  const ramLatency = yield select(selectTacts);
   if (action.payload.isEnabled) {
+    const ramLatency = yield select(selectTacts);
     yield put(setPins(PINS.RAS, PIN_STATE.ON));
+    yield put(setCurrentTacts(ramLatency));
+  }
+}
+
+function* onSetTacting(action) {
+  if (action.payload.isEnabled) {
+    const ramLatency = yield select(selectTacts);
     yield put(setCurrentTacts(ramLatency));
   }
 }
@@ -60,14 +68,12 @@ function* updateNumberOfTacts(action) {
   }
 }
 
-function* onSetCurrentTacts(action) {}
-
 export default function* rootSaga() {
   yield all([
     takeEvery(SET_SELECTED_ADDRESS_IN_MEMORY, resetAddressRowAndCol),
     takeEvery(SET_IS_RAS_CAS_ENABLED, enableRasCasPins),
+    takeEvery(SET_IS_TACTING_ENABLED, onSetTacting),
     takeEvery(SET_SELECTED_COL_IN_MEMORY, constructSelectedMemoryAddress),
     takeEvery(SET_CLOCK_PIN, updateNumberOfTacts),
-    takeEvery(SET_CURRENT_TACTS, onSetCurrentTacts),
   ]);
 }

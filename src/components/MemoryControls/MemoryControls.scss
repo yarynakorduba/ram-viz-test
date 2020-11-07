@@ -15,6 +15,17 @@
     opacity: 0.8;
   }
 
+  &__clockPinBlock {
+    height: 120px;
+    opacity: 1;
+    transition: height 700ms, opacity 700ms;
+    &_hidden {
+      height: 0;
+      opacity: 0;
+      transition: height 700ms, opacity 500ms;
+    }
+  }
+
   &__enabledBlock,
   &__readWriteBlock,
   &__clockPinBlock,

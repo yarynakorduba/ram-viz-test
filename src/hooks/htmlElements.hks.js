@@ -23,8 +23,8 @@ export const useMemoryCSSMeasures = () => {
       : (cellWidth + cellMargin) * Math.pow(2, Math.floor(addressLength / 2));
   const containerHeight =
     displayType === "table"
-      ? verticalOffset + Math.pow(2, addressLength) * (cellHeight + cellMargin)
-      : verticalOffset + Math.pow(2, Math.ceil(addressLength / 2)) * (cellHeight + cellMargin);
+      ? Math.pow(2, addressLength) * (cellHeight + cellMargin)
+      : Math.pow(2, Math.ceil(addressLength / 2)) * (cellHeight + cellMargin);
 
   const getCellPosition = (cellIndex) => {
     if (displayType === "table") {
@@ -70,6 +70,6 @@ export const useMemoryCSSMeasures = () => {
           : cellWidth / dataLength,
     },
     { rowWidth: containerWidth - cellMargin, rowHeight: cellHeight },
-    { colWidth: cellWidth, colHeight: containerHeight - verticalOffset - cellMargin },
+    { colWidth: cellWidth, colHeight: containerHeight - cellMargin },
   ];
 };

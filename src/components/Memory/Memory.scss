@@ -4,6 +4,12 @@
   overflow: visible;
   transition: all 100ms;
 
+  &__memoryContainer {
+    max-width: 582px;
+    max-height: 572px;
+    overflow: scroll;
+  }
+
   &__row,
   &__column {
     fill: transparent;

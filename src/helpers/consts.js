@@ -22,3 +22,8 @@ export const PIN_STATE = {
   ON: "1",
   OFF: "0",
 };
+
+export const VIEW_OPTIONS = [
+  { value: "table", label: "Table View" },
+  { value: "matrix", label: "Matrix View" },
+];

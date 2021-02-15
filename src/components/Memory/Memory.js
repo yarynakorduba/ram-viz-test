@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import BEM from "../../helpers/BEM";
 
 import "./Memory.scss";
@@ -11,29 +11,23 @@ import {
   selectAddressWidth,
 } from "../../redux/reducers/pinsInfo.red";
 import { useAction } from "../../hooks/reactRedux.hks";
-
 import { setMemoryDisplayType } from "../../redux/actions";
-import { selectMemoryDisplayType, selectIsRasCasEnabled } from "../../redux/reducers/visualizationSettings.red";
+import { selectMemoryDisplayType } from "../../redux/reducers/visualizationSettings.red";
 import { useCellOrder } from "../../hooks";
 import { useMemoryCSSMeasures } from "../../hooks/htmlElements.hks";
 import ToggleButtons from "../ToggleButtons";
+import { VIEW_OPTIONS } from "../../helpers/consts";
 
 const b = BEM("Memory");
-
-const viewOptions = [
-  { value: "table", label: "Table View" },
-  { value: "matrix", label: "Matrix View" },
-];
 
 const Memory = () => {
   const setMemoryDisplayTypeAct = useAction(setMemoryDisplayType);
 
   const memorizedInfo = useSelector(selectMemory);
   const displayType = useSelector(selectMemoryDisplayType);
-  const isRasCasEnabled = useSelector(selectIsRasCasEnabled);
   const selectedAddress = useSelector(selectAddress);
-  const selectedRow = useSelector(selectAddressRow(isRasCasEnabled));
-  const selectedColumn = useSelector(selectAddressColumn(isRasCasEnabled));
+  const selectedRow = useSelector(selectAddressRow);
+  const selectedColumn = useSelector(selectAddressColumn);
   const addressWidth = useSelector(selectAddressWidth);
   const memoryDisplayType = useSelector(selectMemoryDisplayType);
 
@@ -52,7 +46,7 @@ const Memory = () => {
     <div className={b()}>
       <ToggleButtons
         containerClassName={b("viewOptions")}
-        options={viewOptions}
+        options={VIEW_OPTIONS}
         selectedValue={memoryDisplayType}
         handleSelect={setMemoryDisplayTypeAct}
       />

@@ -90,12 +90,10 @@ export const selectCurrentTacts = (state) => path(["pinsInfo", "currentTacts"], 
 export const selectRas = (state) => path(["pinsInfo", PINS.RAS], state);
 export const selectCas = (state) => path(["pinsInfo", PINS.CAS], state);
 
-export const selectAddressRow = (isRasCasEnabled) => (state) => {
-  // if (isRasCasEnabled) return path(["pinsInfo", "ras"], state);
-  return compose((address) => take(Math.floor(address.length / 2), address), path(["pinsInfo", "address"]))(state);
+export const selectAddressRow = (state) => {
+  return compose((address) => take(Math.ceil(address.length / 2), address), path(["pinsInfo", "address"]))(state);
 };
 
-export const selectAddressColumn = (isRasCasEnabled) => (state) => {
-  // if (isRasCasEnabled) return path(["pinsInfo", "cas"], state);
-  return compose((address) => takeLast(Math.ceil(address.length / 2), address), path(["pinsInfo", "address"]))(state);
+export const selectAddressColumn = (state) => {
+  return compose((address) => takeLast(Math.floor(address.length / 2), address), path(["pinsInfo", "address"]))(state);
 };

@@ -13,7 +13,7 @@ export const useMemoryCSSMeasures = () => {
 
   // vertical offset is needed to leave some place for header
   const verticalOffset = 22;
-  const cellWidth = 70;
+  const cellWidth = displayType === "table" ? 100 : 70;
   const cellMargin = 2;
   const cellHeight = displayType === "table" ? 20 : 33;
 

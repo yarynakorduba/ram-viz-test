@@ -47,7 +47,7 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
               <text
                 x={0}
                 y={id * PIN_HEIGHT + PIN_HEIGHT - PIN_LABEL_MARGIN}
-                className={b("pinLabel", [pin === PIN_STATE.ON && "active", isDisabled && "disabled"])}
+                className={b("pinLabel", [pin === PIN_STATE.ON && "selected", isDisabled && "disabled"])}
               >
                 {pin}
               </text>

@@ -9,7 +9,7 @@ import Pins from "../PinsBlock";
 
 const b = BEM("MemoryControls");
 
-const DataControls = ({ id }) => {
+const DataControls = () => {
   const memoryState = useSelector(selectMemoryState);
   const datum = useSelector(selectData);
 
@@ -42,7 +42,7 @@ const DataControls = ({ id }) => {
           onInput={handleInputDataLength}
         />
       </label>
-      <Pins binaryData={datum} setBinaryData={memoryState === MEMORY_MODE.WRITE && setDatum} />
+      <Pins binaryData={datum} setBinaryData={setDatum} isDisabled={memoryState === MEMORY_MODE.READ} />
     </div>
   );
 };

@@ -6,7 +6,7 @@
   }
 
   &__header {
-    color: #515e6b;
+    color: var(--text-primary);
     margin-bottom: 2.25rem;
     margin-right: 1rem;
   }
@@ -22,7 +22,7 @@
   &__notes {
     margin-top: 1.25rem;
     font-size: 0.75rem;
-    color: #515e6b;
+    color: var(--text-primary);
     opacity: 0.7;
   }
 }

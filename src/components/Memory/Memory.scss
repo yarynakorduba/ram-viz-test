@@ -1,6 +1,6 @@
 .Memory {
   background: #e6f0ff;
-  padding: 20px;
+  padding: 15px 20px 20px 20px;
   overflow: visible;
   transition: all 100ms;
 
@@ -9,13 +9,13 @@
     fill: transparent;
 
     &_selected {
-      stroke: #488dff;
+      stroke: var(--cta);
       stroke-width: 2px;
     }
   }
 
   &__header {
-    fill: #515e6b;
+    fill: var(--text-primary);
     text-anchor: end; // TODO: check these rules for browser compatibility
     dominant-baseline: middle; // TODO: check these rules for browser compatibility
   }
@@ -27,7 +27,7 @@
       fill: #8fbaff;
     }
     &_selected {
-      fill: #488dff;
+      fill: var(--cta);
     }
   }
 
@@ -38,7 +38,7 @@
       fill: #8fbaff;
     }
     &_selected {
-      fill: #488dff;
+      fill: var(--cta);
     }
   }
 
@@ -51,5 +51,9 @@
     fill: white;
     text-anchor: end; // TODO: check these rules for browser compatibility
     dominant-baseline: middle; // TODO: check these rules for browser compatibility
+  }
+
+  &__viewOptions {
+    padding-bottom: 1rem;
   }
 }

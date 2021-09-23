@@ -19,12 +19,15 @@ const ToggleButtons = ({
   return (
     <div className={`${b()} ${containerClassName}`}>
       {map(
-        ({ value, label }) =>
-          console.log(selectedValue, value) || (
-            <button className={b("option", [selectedValue === value && "selected"])} onClick={onSelect(value)}>
-              {label}
-            </button>
-          ),
+        ({ value, label }) => (
+          <button
+            key={value}
+            className={b("option", [selectedValue === value && "selected"])}
+            onClick={onSelect(value)}
+          >
+            {label}
+          </button>
+        ),
         options
       )}
     </div>

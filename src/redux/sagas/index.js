@@ -1,29 +1,31 @@
-import { takeEvery, put, all, select } from "redux-saga/effects";
+import { takeEvery, put, all, select, call } from "redux-saga/effects";
 import {
-  SET_SELECTED_ADDRESS_IN_MEMORY,
-  setAddressRowInMemory,
-  setAddressColumnInMemory,
+  setSelectedRowInMemory,
+  setSelectedColInMemory,
   SET_IS_RAS_CAS_ENABLED,
   setPins,
-  SET_SELECTED_COL_IN_MEMORY,
-  setSelectedAddressInMemory,
   toggleRasCas,
   setCurrentTacts,
   SET_CLOCK_PIN,
-  SET_CURRENT_TACTS,
   SET_IS_TACTING_ENABLED,
+  resetMemory,
+  WRITE_DATUM_IN_MEMORY,
+  SET_PINS_WIDTH,
 } from "../actions";
 import { PINS, PIN_STATE } from "../../helpers/consts";
-import { selectSelectedRow } from "../reducers/memory.red";
-import { isEmpty } from "ramda";
 import { selectIsRasCasEnabled } from "../reducers/visualizationSettings.red";
-import { selectTacts, selectCurrentTacts } from "../reducers/pinsInfo.red";
+import { selectTacts, selectCurrentTacts, selectAddressWidth } from "../reducers/pinsInfo.red";
 
 function* resetAddressRowAndCol(data) {
   if (!data.payload) {
-    yield put(setAddressRowInMemory(""));
-    yield put(setAddressColumnInMemory(""));
+    yield put(setSelectedRowInMemory(""));
+    yield put(setSelectedColInMemory(""));
   }
+}
+
+function* onWidthChange() {
+  const width = yield select(selectAddressWidth);
+  resetMemory({ width });
 }
 
 function* enableRasCasPins(action) {
@@ -35,17 +37,10 @@ function* enableRasCasPins(action) {
 }
 
 function* onSetTacting(action) {
+  yield call(resetAddressRowAndCol);
   if (action.payload.isEnabled) {
     const ramLatency = yield select(selectTacts);
     yield put(setCurrentTacts(ramLatency));
-  }
-}
-
-function* constructSelectedMemoryAddress(action) {
-  const selectedCol = action.payload;
-  const selectedRow = yield select(selectSelectedRow);
-  if (!isEmpty(selectedCol) && !isEmpty(selectedRow)) {
-    yield put(setSelectedAddressInMemory(`${selectedRow}${selectedCol}`));
   }
 }
 
@@ -70,10 +65,10 @@ function* updateNumberOfTacts(action) {
 
 export default function* rootSaga() {
   yield all([
-    takeEvery(SET_SELECTED_ADDRESS_IN_MEMORY, resetAddressRowAndCol),
+    takeEvery(WRITE_DATUM_IN_MEMORY, resetAddressRowAndCol),
     takeEvery(SET_IS_RAS_CAS_ENABLED, enableRasCasPins),
     takeEvery(SET_IS_TACTING_ENABLED, onSetTacting),
-    takeEvery(SET_SELECTED_COL_IN_MEMORY, constructSelectedMemoryAddress),
     takeEvery(SET_CLOCK_PIN, updateNumberOfTacts),
+    takeEvery(SET_PINS_WIDTH, onWidthChange),
   ]);
 }

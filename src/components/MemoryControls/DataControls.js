@@ -28,10 +28,9 @@ const DataControls = () => {
       <label className={b("dataLabel")}>
         <div className={b("dataMode")}>
           <span className={b("dataModeLabel")}>{memoryState === MEMORY_MODE.WRITE ? "Input: " : "Output: "}</span>
-          <span>
-            {datum} ({parseInt(datum, 2)})
-          </span>
+          <span>{datum}</span>
         </div>
+        <div>Decimal: {parseInt(datum, 2)}</div>
         <div className={b("bitsWidth")}>width: {dataLength} bits</div>
         <input
           name="dataLength"

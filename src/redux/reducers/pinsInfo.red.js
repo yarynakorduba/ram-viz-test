@@ -1,18 +1,22 @@
-import { path, take, takeLast, compose } from "ramda";
+import { path, slice, take, takeLast, compose } from "ramda";
 import {
   SET_PINS,
   SET_PINS_WIDTH,
   SET_TACTS,
   SET_CURRENT_TACTS,
-  SET_ADDRESS_ROW,
-  SET_ADDRESS_COLUMN,
+  SET_RAS_PIN,
+  SET_CAS_PIN,
   TOGGLE_RAS_CAS,
   SET_CLOCK_PIN,
+  SET_ADDRESS_ROW_PINS,
+  SET_ADDRESS_COL_PINS,
 } from "../actions";
 import { MEMORY_MODE, MEMORY_STATE, PIN_STATE, PINS } from "../../helpers/consts";
 
 const initialState = {
   address: PIN_STATE.OFF.repeat(4),
+  row: PIN_STATE.OFF.repeat(2),
+  col: PIN_STATE.OFF.repeat(2),
   [PINS.RAS]: PIN_STATE.OFF,
   [PINS.CAS]: PIN_STATE.OFF,
   addressWidth: 4,
@@ -28,17 +32,26 @@ const initialState = {
 const pinsInfo = (state = initialState, action) => {
   const { payload } = action;
   switch (action.type) {
-    case SET_ADDRESS_ROW:
+    case SET_RAS_PIN:
       return {
         ...state,
         [PINS.RAS]: payload,
       };
-    case SET_ADDRESS_COLUMN:
+    case SET_CAS_PIN:
       return {
         ...state,
         [PINS.CAS]: payload,
       };
-
+    case SET_ADDRESS_ROW_PINS:
+      return {
+        ...state,
+        row: payload,
+      };
+    case SET_ADDRESS_COL_PINS:
+      return {
+        ...state,
+        col: payload,
+      };
     case SET_CLOCK_PIN:
       return {
         ...state,
@@ -64,11 +77,12 @@ const pinsInfo = (state = initialState, action) => {
     case SET_PINS_WIDTH: {
       const { type, width } = payload;
       const updatedValue = state[type].padStart(width, "0").slice(-width);
-      return {
-        ...state,
-        [type]: updatedValue,
-        [`${type}Width`]: width,
-      };
+      const update = { [type]: updatedValue, [`${type}Width`]: width };
+      if (type === "address") {
+        update.row = slice(0, updatedValue.length / 2, updatedValue);
+        update.col = slice(updatedValue.length / 2, updatedValue.length, updatedValue);
+      }
+      return { ...state, ...update };
     }
     default:
       return state;
@@ -77,7 +91,6 @@ const pinsInfo = (state = initialState, action) => {
 
 export default pinsInfo;
 
-export const selectAddress = (state) => path(["pinsInfo", "address"], state);
 export const selectData = (state) => path(["pinsInfo", "data"], state);
 export const selectDataWidth = (state) => path(["pinsInfo", "dataWidth"], state);
 export const selectAddressWidth = (state) => path(["pinsInfo", "addressWidth"], state);
@@ -90,10 +103,16 @@ export const selectCurrentTacts = (state) => path(["pinsInfo", "currentTacts"], 
 export const selectRas = (state) => path(["pinsInfo", PINS.RAS], state);
 export const selectCas = (state) => path(["pinsInfo", PINS.CAS], state);
 
-export const selectAddressRow = (state) => {
-  return compose((address) => take(Math.ceil(address.length / 2), address), path(["pinsInfo", "address"]))(state);
+export const selectAddressRowPins = (state) => {
+  return path(["pinsInfo", "row"], state);
 };
 
-export const selectAddressColumn = (state) => {
-  return compose((address) => takeLast(Math.floor(address.length / 2), address), path(["pinsInfo", "address"]))(state);
+export const selectAddressColPins = (state) => {
+  return path(["pinsInfo", "col"], state);
+};
+
+export const selectAddress = (state) => {
+  const addressRow = selectAddressRowPins(state);
+  const addressColumn = selectAddressColPins(state);
+  return `${addressRow}${addressColumn}`;
 };

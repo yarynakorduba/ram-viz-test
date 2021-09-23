@@ -4,9 +4,9 @@ import BEM from "../../helpers/BEM";
 
 import { useSelector } from "react-redux";
 import { selectIsPinNotationClassical } from "../../redux/reducers/visualizationSettings.red";
+import { PIN_STATE } from "../../helpers/consts";
 
 import "./PinsBlock.scss";
-import { PIN_STATE } from "../../helpers/consts";
 
 const b = BEM("PinsBlock");
 
@@ -57,7 +57,7 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
                 y1={id * PIN_HEIGHT + PIN_HEIGHT}
                 x2={defaultPinWidth}
                 y2={id * PIN_HEIGHT + PIN_HEIGHT}
-                className={b("pin", [classicalNotation ? "short" : "long"])}
+                className={b("pin", [classicalNotation && binaryDataArray.length > 1 ? "short" : "long"])}
               />
             </g>
           );
@@ -83,13 +83,14 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
           y2={crossedNotationYPosition + 1}
           className={b("crossNotation", [classicalNotation ? "visible" : "invisible"])}
         />
-        <line
+        {binaryDataArray.length > 1 && (<line
           x1={pinWidth}
           y1={crossedNotationYPosition}
           x2={defaultPinWidth}
           y2={crossedNotationYPosition}
           className={b("pinsNotation", [classicalNotation ? "visible" : "invisible"])}
         />
+        )}
       </svg>
     </div>
   );

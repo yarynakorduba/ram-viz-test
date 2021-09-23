@@ -3,10 +3,8 @@ import {
   setMemory,
   setPins,
   setDatumInMemory,
-  toggleRasCas,
-  setSelectedAddressInMemory,
-  setAddressColumnInMemory,
-  setAddressRowInMemory,
+  setSelectedRowInMemory,
+  setSelectedColInMemory,
   setClockPin,
 } from "../redux/actions";
 import { useSelector } from "react-redux";
@@ -14,20 +12,19 @@ import {
   selectDataWidth,
   selectAddressWidth,
   selectAddress,
-  selectEnabled,
   selectData,
   selectMemoryState,
   selectCurrentTacts,
   selectClock,
-  selectRas,
+  selectAddressColPins,
+  selectAddressRowPins,
+  selectEnabled,
 } from "../redux/reducers/pinsInfo.red";
-import { selectMemory, selectSelectedAddress } from "../redux/reducers/memory.red";
-import { useEffect } from "react";
+import { selectMemory, selectSelectedRow, selectSelectedColumn } from "../redux/reducers/memory.red";
+import { useEffect, useRef } from "react";
 import { compose } from "redux";
-import { map, take, takeLast } from "ramda";
-import { MEMORY_STATE, MEMORY_MODE, PINS, PIN_STATE } from "../helpers/consts";
-import { selectIsRasCasEnabled } from "../redux/reducers/visualizationSettings.red";
-import { useRef } from "react";
+import { map } from "ramda";
+import { MEMORY_MODE, MEMORY_STATE, PINS, PIN_STATE } from "../helpers/consts";
 
 export const useControlMemorySize = () => {
   const setMemoryAct = useAction(setMemory);
@@ -86,7 +83,6 @@ export const useControlMemoryDatumWidth = () => {
 };
 
 export const useTacting = () => {
-  const toggleRasCasAct = useAction(toggleRasCas);
   // const setCurrentTactsAct = useAction(setCurrentTacts);
   const setClockPinAct = useAction(setClockPin);
   const clock = useSelector(selectClock);
@@ -101,7 +97,7 @@ export const useTacting = () => {
       }, 500);
     }
     return () => clearTimeout(resetClockTimeout.current);
-  }, [clock, currentTacts, setClockPinAct, toggleRasCasAct]);
+  }, [clock, currentTacts, setClockPinAct]);
 
   const handleSetClock = () => {
     if (currentTacts > 0) {
@@ -114,66 +110,53 @@ export const useTacting = () => {
 
 export const useReadWriteMemoryDatum = () => {
   const setPinsAct = useAction(setPins);
-  const setSelectedAddressInMemoryAct = useAction(setSelectedAddressInMemory);
-  const setSelectedRowInMemoryAct = useAction(setAddressRowInMemory);
-  const setSelectedColInMemoryAct = useAction(setAddressColumnInMemory);
+  const setSelectedRowInMemoryAct = useAction(setSelectedRowInMemory);
+  const setSelectedColInMemoryAct = useAction(setSelectedColInMemory);
+
   const memorizedInfo = useSelector(selectMemory);
   const setDatumInMemoryAct = useAction(setDatumInMemory);
   const address = useSelector(selectAddress);
-  const addressWidth = useSelector(selectAddressWidth);
+  const rasAddr = useSelector(selectAddressRowPins);
+  const casAddr = useSelector(selectAddressColPins);
   const dataWidth = useSelector(selectDataWidth);
-  const selectedAddressInMemory = useSelector(selectSelectedAddress);
-  const enabled = useSelector(selectEnabled);
   const datum = useSelector(selectData);
   const memoryState = useSelector(selectMemoryState);
+  const isEnabled = useSelector(selectEnabled);
   const currentTacts = useSelector(selectCurrentTacts);
-  const isRasCasEnabled = useSelector(selectIsRasCasEnabled);
-  const ras = useSelector(selectRas);
+  const selectedRow = useSelector(selectSelectedRow);
+  const selectedCol = useSelector(selectSelectedColumn);
 
   const setDatum = (datum) => setPinsAct(PINS.DATA, datum);
 
+  // if memory state has been changed between read and write, reset the data
   useEffect(() => {
-    if (memoryState && currentTacts !== 0) {
+    if (memoryState &&  currentTacts !== 0) {
       setDatum(PIN_STATE.OFF.repeat(dataWidth));
     }
   }, [memoryState]);
 
   // update datum in memory if address is already selected
   useEffect(() => {
-    if (selectedAddressInMemory) {
-      if (memoryState === MEMORY_MODE.WRITE) {
-        setDatumInMemoryAct(datum, selectedAddressInMemory);
-        setSelectedAddressInMemoryAct("");
-      }
+    if (selectedRow && selectedCol
+      && isEnabled === MEMORY_STATE.ENABLED
+      && memoryState === MEMORY_MODE.WRITE
+    ) {
+      setDatumInMemoryAct(datum, `${selectedRow}${selectedCol}`);
     }
-  }, [selectedAddressInMemory, datum, setDatumInMemoryAct, setSelectedColInMemoryAct, setSelectedRowInMemoryAct]);
+  }, [selectedCol, selectedRow, datum, isEnabled, setDatumInMemoryAct]);
 
-  // update datum in memory if address is already selected
+  // read datum from memory if address is already selected
   useEffect(() => {
-    if (selectedAddressInMemory) {
-      if (memoryState === MEMORY_MODE.READ) {
-        setDatum(memorizedInfo[parseInt(address, 2)].datum);
-        setSelectedAddressInMemoryAct("");
-      }
+    if (selectedRow && selectedCol
+      && isEnabled === MEMORY_STATE.ENABLED
+      && memoryState === MEMORY_MODE.READ
+    ) {
+      setDatum(memorizedInfo[parseInt(address, 2)].datum);
     }
-  }, [memoryState, memorizedInfo, address, selectedAddressInMemory, datum]);
+  }, [memoryState, memorizedInfo, address, selectedRow, selectedCol, datum, isEnabled]);
 
-  // set selected address in memory
   useEffect(() => {
-    if (enabled === MEMORY_STATE.ENABLED && currentTacts === 0) {
-      if (!isRasCasEnabled) {
-        if (memoryState === MEMORY_MODE.WRITE) {
-          setSelectedAddressInMemoryAct(address);
-        } else {
-          setDatum(memorizedInfo[parseInt(address, 2)].datum);
-        }
-      } else {
-        if (ras === PIN_STATE.ON) {
-          setSelectedRowInMemoryAct(take(Math.ceil(addressWidth / 2), address));
-        } else {
-          setSelectedColInMemoryAct(takeLast(Math.floor(addressWidth / 2), address));
-        }
-      }
-    }
-  }, [enabled, memoryState, address, datum, currentTacts, addressWidth, setDatumInMemoryAct]);
+    if (rasAddr && !currentTacts) setSelectedRowInMemoryAct(rasAddr);
+    if (casAddr && selectedRow && !currentTacts) setSelectedColInMemoryAct(casAddr);
+  }, [rasAddr, casAddr, currentTacts, setSelectedRowInMemoryAct, setSelectedColInMemoryAct]);
 };

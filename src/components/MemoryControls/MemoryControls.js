@@ -10,19 +10,8 @@ import StateControls from "./StateControls";
 import ClockControls from "./ClockControls";
 import ToggleButtons from "../ToggleButtons";
 
-import {
-  setIsPinNotationClassical,
-  setIsTactingEnabled,
-  setMemoryDisplayType,
-  setIsRasCasEnabled,
-  setCurrentTacts,
-} from "../../redux/actions";
-import {
-  selectIsPinNotationClassical,
-  selectIsTactingEnabled,
-  selectMemoryDisplayType,
-  selectIsRasCasEnabled,
-} from "../../redux/reducers/visualizationSettings.red";
+import { setIsPinNotationClassical } from "../../redux/actions";
+import { selectIsPinNotationClassical } from "../../redux/reducers/visualizationSettings.red";
 
 import "./MemoryControls.scss";
 

@@ -3,10 +3,13 @@ export const SET_PINS = "SET_PINS";
 
 export const SET_CLOCK_PIN = "SET_CLOCK_PIN";
 
-// These actions are use for RAS / CAS mode,
+// These actions are used for RAS / CAS mode,
 // when row and column address are set separately
-export const SET_ADDRESS_ROW = "SET_ADDRESS_ROW";
-export const SET_ADDRESS_COLUMN = "SET_ADDRESS_COLUMN";
+export const SET_RAS_PIN = "SET_RAS_PIN";
+export const SET_CAS_PIN = "SET_CAS_PIN";
+
+export const SET_ADDRESS_ROW_PINS = "SET_ADDRESS_ROW_PINS";
+export const SET_ADDRESS_COL_PINS = "SET_ADDRESS_COL_PINS";
 
 export const SET_MEMORY = "SET_MEMORY";
 export const SET_TACTS = "SET_TACTS";
@@ -26,15 +29,22 @@ export const SET_SELECTED_ROW_IN_MEMORY = "SET_SELECTED_ROW_IN_MEMORY";
 export const SET_SELECTED_COL_IN_MEMORY = "SET_SELECTED_COL_IN_MEMORY";
 export const SET_SELECTED_ADDRESS_IN_MEMORY = "SET_SELECTED_ADDRESS_IN_MEMORY";
 
+export const RESET_MEMORY = "RESET_MEMORY";
+export const RESET_PINS = "RESET_PINS";
+export const resetMemory = (width = undefined) => ({ type: RESET_MEMORY, payload: { width } });
+
 export const setPins = (type, value) => ({ type: SET_PINS, payload: { type, value } });
 
 export const setClockPin = (value) => ({ type: SET_CLOCK_PIN, payload: value });
 
-export const setRas = (value) => ({ type: SET_ADDRESS_ROW, payload: value });
-export const setCas = (value) => ({ type: SET_ADDRESS_COLUMN, payload: value });
+export const setRas = (value) => ({ type: SET_RAS_PIN, payload: value });
+export const setCas = (value) => ({ type: SET_CAS_PIN, payload: value });
 
-export const setAddressRowInMemory = (value) => ({ type: SET_SELECTED_ROW_IN_MEMORY, payload: value });
-export const setAddressColumnInMemory = (value) => ({ type: SET_SELECTED_COL_IN_MEMORY, payload: value });
+export const setAddressRowPins = (value) => ({ type: SET_ADDRESS_ROW_PINS, payload: value });
+export const setAddressColPins = (value) => ({ type: SET_ADDRESS_COL_PINS, payload: value });
+
+export const setSelectedRowInMemory = (value) => ({ type: SET_SELECTED_ROW_IN_MEMORY, payload: value });
+export const setSelectedColInMemory = (value) => ({ type: SET_SELECTED_COL_IN_MEMORY, payload: value });
 export const setSelectedAddressInMemory = (value) => ({ type: SET_SELECTED_ADDRESS_IN_MEMORY, payload: value });
 
 export const setPinsTypeWidth = (type, width) => ({ type: SET_PINS_WIDTH, payload: { type, width } });

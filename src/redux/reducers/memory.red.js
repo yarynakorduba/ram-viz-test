@@ -61,10 +61,3 @@ export const selectMemory = (state) => path(["memory", "memoryArray"], state);
 
 export const selectSelectedRow = (state) => path(["memory", "selectedAddress", "row"], state);
 export const selectSelectedColumn = (state) => path(["memory", "selectedAddress", "col"], state);
-
-// export const selectSelectedAddress = (state) => {
-//   const selectedRow = selectSelectedRow(state);
-//   const selectedCol = selectSelectedColumn(state);
-//   return `${selectedRow}${selectedCol}`;
-//   return path(["memory", "selectedAddress", "address"], state);
-// };

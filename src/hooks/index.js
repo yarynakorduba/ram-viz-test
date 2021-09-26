@@ -137,6 +137,7 @@ export const useReadWriteMemoryDatum = () => {
 
   // update datum in memory if address is already selected
   useEffect(() => {
+    console.log("===selected row and col --- > ", selectedRow, selectedCol)
     if (selectedRow && selectedCol
       && isEnabled === MEMORY_STATE.ENABLED
       && memoryState === MEMORY_MODE.WRITE
@@ -157,6 +158,6 @@ export const useReadWriteMemoryDatum = () => {
 
   useEffect(() => {
     if (rasAddr && !currentTacts) setSelectedRowInMemoryAct(rasAddr);
-    if (casAddr && selectedRow && !currentTacts) setSelectedColInMemoryAct(casAddr);
+    if (casAddr && rasAddr && !currentTacts) setSelectedColInMemoryAct(casAddr);
   }, [rasAddr, casAddr, currentTacts, setSelectedRowInMemoryAct, setSelectedColInMemoryAct]);
 };

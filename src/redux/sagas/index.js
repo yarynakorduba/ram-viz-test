@@ -2,6 +2,8 @@ import { takeEvery, put, all, select, call } from "redux-saga/effects";
 import {
   setSelectedRowInMemory,
   setSelectedColInMemory,
+  setAddressRowPins,
+  setAddressColPins,
   SET_IS_RAS_CAS_ENABLED,
   setPins,
   toggleRasCas,
@@ -17,10 +19,11 @@ import { selectIsRasCasEnabled } from "../reducers/visualizationSettings.red";
 import { selectTacts, selectCurrentTacts, selectAddressWidth } from "../reducers/pinsInfo.red";
 
 function* resetAddressRowAndCol(data) {
-  if (!data || !data.payload) {
-    yield put(setSelectedRowInMemory(""));
-    yield put(setSelectedColInMemory(""));
-  }
+  console.log("====resetAddressRowAndCol --- > ", data)
+  yield put(setSelectedRowInMemory(""));
+  yield put(setSelectedColInMemory(""));
+  yield put(setAddressRowPins('00'));
+  yield put(setAddressColPins('00'));
 }
 
 function* onWidthChange() {
@@ -37,7 +40,7 @@ function* enableRasCasPins(action) {
 }
 
 function* onSetTacting(action) {
-  yield call(resetAddressRowAndCol);
+  // yield call(resetAddressRowAndCol);
   if (action.payload.isEnabled) {
     const ramLatency = yield select(selectTacts);
     yield put(setCurrentTacts(ramLatency));

@@ -1,4 +1,4 @@
-import { path, slice, take, takeLast, compose } from "ramda";
+import { path, slice } from "ramda";
 import {
   SET_PINS,
   SET_PINS_WIDTH,

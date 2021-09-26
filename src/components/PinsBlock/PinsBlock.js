@@ -12,6 +12,7 @@ const b = BEM("PinsBlock");
 
 const PIN_HEIGHT = 20;
 const PIN_LABEL_MARGIN = 3;
+const PIN_TEXT_WIDTH = 25;
 
 const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
   const [binaryDataArray, setBinaryDataArray] = useState(`${binaryData}`.split(""));
@@ -30,17 +31,22 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
       setBinaryData(updatedDataArray.join(""));
     }
   };
-  const defaultPinWidth = 125;
+  const defaultPinWidth = 80;
   const pinWidth = classicalNotation ? 25 : defaultPinWidth;
   const crossedNotationYPosition = (binaryDataArray.length * PIN_HEIGHT) / 2 + PIN_HEIGHT / 2;
   return (
     <div className={b()}>
-      <svg className={b("list")} width={defaultPinWidth} height={(binaryDataArray.length + 1) * PIN_HEIGHT}>
+      <svg
+        className={b("list")}
+        width={defaultPinWidth + PIN_TEXT_WIDTH}
+        height={(binaryDataArray.length + 1) * PIN_HEIGHT + PIN_TEXT_WIDTH}
+        viewBox={`-${PIN_TEXT_WIDTH} 0 ${PIN_TEXT_WIDTH + defaultPinWidth} ${(binaryDataArray.length + 1) * PIN_HEIGHT + PIN_TEXT_WIDTH}`}
+      >
         {binaryDataArray.map((pin, id) => {
           return (
             <g key={id} onClick={handleDataPinClick(id)}>
               {binaryDataArray.length > 1 && includes(id, [0, binaryDataArray.length - 1]) && (
-                <text x="0" y={id * PIN_HEIGHT + PIN_HEIGHT - PIN_LABEL_MARGIN} className={b("pinSignificance")}>
+                <text x={-PIN_TEXT_WIDTH} y={id * PIN_HEIGHT + PIN_HEIGHT - PIN_LABEL_MARGIN} className={b("pinSignificance")}>
                   {id === 0 ? "MSB" : "LSB"}
                 </text>
               )}
@@ -51,7 +57,7 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
               >
                 {pin}
               </text>
-              <rect x={0} y={id * PIN_HEIGHT} height={PIN_HEIGHT} width={pinWidth} className={b("pinArea")} />
+              <rect x={0} y={id * PIN_HEIGHT} height={PIN_HEIGHT} width={pinWidth} className={b("pinArea", [isDisabled && "disabled"])} />
               <line
                 x1={0}
                 y1={id * PIN_HEIGHT + PIN_HEIGHT}
@@ -70,16 +76,16 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
           className={b("pinsDivider", [classicalNotation ? "visible" : "invisible"])}
         />
         <text
-          x={64}
+          x={45}
           y={crossedNotationYPosition - PIN_LABEL_MARGIN}
           className={b("pinsNumber", [classicalNotation ? "visible" : "invisible"])}
         >
           {binaryDataArray.length}
         </text>
         <line
-          x1={classicalNotation ? 70 : defaultPinWidth}
+          x1={classicalNotation ? 50 : defaultPinWidth}
           y1={crossedNotationYPosition + 1}
-          x2={classicalNotation ? 90 : defaultPinWidth}
+          x2={classicalNotation ? 70 : defaultPinWidth}
           y2={crossedNotationYPosition + 1}
           className={b("crossNotation", [classicalNotation ? "visible" : "invisible"])}
         />

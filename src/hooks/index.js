@@ -148,10 +148,10 @@ export const useReadWriteMemoryDatum = () => {
   // read datum from memory if address is already selected
   useEffect(() => {
     if (selectedRow && selectedCol
-      && isEnabled === MEMORY_STATE.ENABLED
       && memoryState === MEMORY_MODE.READ
     ) {
-      setDatum(memorizedInfo[parseInt(address, 2)].datum);
+      if (isEnabled === MEMORY_STATE.ENABLED) setDatum(memorizedInfo[parseInt(address, 2)].datum);
+      else setDatum(PIN_STATE.OFF.repeat(dataWidth))
     }
   }, [memoryState, memorizedInfo, address, selectedRow, selectedCol, datum, isEnabled]);
 

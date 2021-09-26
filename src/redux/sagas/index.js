@@ -17,7 +17,7 @@ import { selectIsRasCasEnabled } from "../reducers/visualizationSettings.red";
 import { selectTacts, selectCurrentTacts, selectAddressWidth } from "../reducers/pinsInfo.red";
 
 function* resetAddressRowAndCol(data) {
-  if (!data.payload) {
+  if (!data || !data.payload) {
     yield put(setSelectedRowInMemory(""));
     yield put(setSelectedColInMemory(""));
   }

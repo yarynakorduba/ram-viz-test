@@ -91,6 +91,7 @@ export const useTacting = () => {
   // reset clock pin to 0 state after a small timeout
   const resetClockTimeout = useRef(null);
   useEffect(() => {
+    console.log("===>>> clock", clock, currentTacts)
     if (clock === PIN_STATE.ON) {
       resetClockTimeout.current = setTimeout(() => {
         setClockPinAct(PIN_STATE.OFF);

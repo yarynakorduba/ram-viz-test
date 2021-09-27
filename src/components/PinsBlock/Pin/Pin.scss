@@ -37,6 +37,7 @@
 
   &__pinLine {
     stroke: var(--text-gray);
+    stroke-linecap: round;
 
     &_long {
       stroke-dasharray: 100 100;

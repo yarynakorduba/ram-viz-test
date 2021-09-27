@@ -164,19 +164,22 @@ export const useReadWriteMemoryDatum = () => {
   }, [isRasCasEnabled, setSelectedColInMemoryAct, setSelectedColInMemoryAct]);
 
   // TODO: fix error somewhere here (RAS / CAS second enter)
-  useEffect(() => {
-    if (!currentTacts && (!isRasCasEnabled || !isRas) && casAddr) {
-      console.log("writing col ->", { casAddr });
-      setSelectedColInMemoryAct(casAddr);
-    }
-  }, [isRasCasEnabled, isRas, casAddr, currentTacts, setSelectedColInMemoryAct]);
+  // useEffect(() => {
+  //   console.log("---col->>> ", { isRasCasEnabled, casAddr, rasAddr });
+  //   if (!currentTacts && (!isRasCasEnabled || !isRas) && casAddr) {
+  //     setSelectedColInMemoryAct(casAddr);
+  //   }
+  // }, [isRasCasEnabled, isRas, casAddr, currentTacts, setSelectedColInMemoryAct]);
 
   useEffect(() => {
+    console.log("--row-->>> ", { isRasCasEnabled, casAddr, rasAddr });
+    if (!currentTacts && (!isRasCasEnabled || !isRas) && casAddr) {
+      setSelectedColInMemoryAct(casAddr);
+    }
     if (!currentTacts && (!isRasCasEnabled || isRas) && rasAddr) {
-      console.log("writing row ->", { rasAddr });
       setSelectedRowInMemoryAct(rasAddr);
     }
-  }, [isRasCasEnabled, isRas, rasAddr, currentTacts, setSelectedRowInMemoryAct]);
+  }, [isRasCasEnabled, isRas, casAddr, rasAddr, currentTacts, setSelectedRowInMemoryAct]);
 };
 
 export const useIsMounted = () => {

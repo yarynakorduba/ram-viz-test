@@ -178,3 +178,22 @@ export const useReadWriteMemoryDatum = () => {
     }
   }, [isRasCasEnabled, isRas, rasAddr, currentTacts, setSelectedRowInMemoryAct]);
 };
+
+export const useIsMounted = () => {
+  const isMounted = useRef(false);
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+  return isMounted;
+};
+
+export const usePrevious = (value, initialValue = null) => {
+  const prev = useRef(initialValue);
+  useEffect(() => {
+    prev.current = value;
+  });
+  return prev.current;
+};

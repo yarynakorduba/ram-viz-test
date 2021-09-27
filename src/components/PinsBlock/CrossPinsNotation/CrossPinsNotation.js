@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 
 import BEM from "../../../helpers/BEM";
 import { DEFAULT_PIN_WIDTH, PIN_HEIGHT, PIN_LABEL_MARGIN } from "../../../helpers/consts";
+import { usePrevious } from "../../../hooks";
 
 import "./CrossPinsNotation.scss";
 
@@ -9,6 +10,8 @@ const b = BEM("CrossPinsNotation");
 
 const CrossPinsNotation = ({ pinWidth, isNotationClassical, numberOfPins }) => {
   const crossedNotationYPosition = useMemo(() => (numberOfPins * PIN_HEIGHT) / 2 + PIN_HEIGHT / 2, [numberOfPins]);
+
+  const previousIsNotationClassical = usePrevious(isNotationClassical);
 
   return (
     <>
@@ -39,7 +42,13 @@ const CrossPinsNotation = ({ pinWidth, isNotationClassical, numberOfPins }) => {
           y1={crossedNotationYPosition}
           x2={DEFAULT_PIN_WIDTH}
           y2={crossedNotationYPosition}
-          className={b("pinsNotation", [isNotationClassical ? "visible" : "invisible"])}
+          className={b("pinsNotation", [
+            isNotationClassical &&
+              (previousIsNotationClassical === null || previousIsNotationClassical === isNotationClassical
+                ? "visible"
+                : "visibleAnimated"),
+            !isNotationClassical && "invisible",
+          ])}
         />
       )}
     </>

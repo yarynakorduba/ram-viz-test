@@ -23,7 +23,7 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
 
   useEffect(() => {
     if (binaryData) setBinaryDataArray(`${binaryData}`.split(""));
-  }, [binaryData]);
+  }, [binaryData, setBinaryDataArray]);
 
   const handleDataPinClick = useCallback(
     (pinIndex) => () => {
@@ -51,10 +51,11 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
           isNotationClassical={isNotationClassical}
           significance={numberOfPins > 1 && significance}
           handleDataPinClick={handleDataPinClick}
+          isDisabled={isDisabled}
         />
       );
     },
-    [numberOfPins, getIsFirstOrLastPin, handleDataPinClick, isNotationClassical, pinWidth]
+    [isDisabled, numberOfPins, getIsFirstOrLastPin, handleDataPinClick, isNotationClassical, pinWidth]
   );
 
   return (

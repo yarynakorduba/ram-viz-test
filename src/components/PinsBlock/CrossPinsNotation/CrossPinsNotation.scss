@@ -52,6 +52,10 @@
     animation-fill-mode: forwards;
 
     &_visible {
+      //   animation: hideshow 0s ease-in 1;
+      stroke-dashoffset: 10;
+    }
+    &_visibleAnimated {
       animation: hideshow 1s ease-in 1;
     }
   }

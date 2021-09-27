@@ -1,0 +1,63 @@
+@keyframes hideshow {
+  0% {
+    stroke-dashoffset: -100;
+  }
+  100% {
+    stroke-dashoffset: 10;
+  }
+}
+
+.CrossPinsNotation {
+  &__pinsDivider {
+    stroke: var(--text-primary);
+    &_visible {
+      transition-delay: 1s;
+    }
+    &_invisible {
+      opacity: 0;
+    }
+  }
+
+  &__pinsNumber {
+    fill: var(--text-primary);
+    font-weight: 600;
+    opacity: 0.4;
+    &_visible {
+      transition-delay: 1s;
+    }
+    &_invisible {
+      opacity: 0;
+    }
+  }
+
+  &__crossNotation {
+    opacity: 0;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    &_visible {
+      opacity: 1;
+      transform-origin: center;
+      transform-box: fill-box;
+      transform: rotate(-45deg);
+      transition: transform 1s, opacity 0s;
+      transition-delay: 1s;
+    }
+  }
+
+  &__pinsNotation {
+    stroke-width: 3;
+    opacity: 1;
+    stroke-dasharray: 100;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+
+    &_visible {
+      animation: hideshow 1s ease-in 1;
+    }
+  }
+
+  &__crossNotation,
+  &__pinsNotation {
+    stroke: var(--text-gray);
+  }
+}

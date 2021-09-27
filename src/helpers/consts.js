@@ -27,3 +27,9 @@ export const VIEW_OPTIONS = [
   { value: "table", label: "Table View" },
   { value: "matrix", label: "Matrix View" },
 ];
+
+// styling consts
+export const PIN_HEIGHT = 20;
+export const DEFAULT_PIN_WIDTH = 80;
+export const PIN_LABEL_MARGIN = 3;
+export const SIGNIFICANCE_TEXT_WIDTH = 25;

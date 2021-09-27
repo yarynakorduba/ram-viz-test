@@ -23,11 +23,11 @@ import {
   selectAddressColPins,
   selectAddressRowPins,
   selectEnabled,
-  selectRas
+  selectRas,
 } from "../redux/reducers/pinsInfo.red";
 import { selectMemory, selectSelectedRow, selectSelectedColumn } from "../redux/reducers/memory.red";
 import { MEMORY_MODE, MEMORY_STATE, PINS, PIN_STATE } from "../helpers/consts";
-import { selectIsRasCasEnabled } from '../redux/reducers/visualizationSettings.red';
+import { selectIsRasCasEnabled } from "../redux/reducers/visualizationSettings.red";
 
 export const useControlMemorySize = () => {
   const setMemoryAct = useAction(setMemory);
@@ -135,29 +135,24 @@ export const useReadWriteMemoryDatum = () => {
 
   // if memory state has been changed between read and write, reset the data
   useEffect(() => {
-    if (memoryState &&  currentTacts !== 0) {
+    if (memoryState && currentTacts !== 0) {
       setDatum(PIN_STATE.OFF.repeat(dataWidth));
     }
   }, [memoryState]);
 
   // update datum in memory if address is already selected
   useEffect(() => {
-    console.log("====asele", { selectedRow, selectedCol })
-    if (selectedRow && selectedCol
-      && isEnabled === MEMORY_STATE.ENABLED
-      && memoryState === MEMORY_MODE.WRITE
-    ) {
+    console.log("====asele", { selectedRow, selectedCol });
+    if (selectedRow && selectedCol && isEnabled === MEMORY_STATE.ENABLED && memoryState === MEMORY_MODE.WRITE) {
       setDatumInMemoryAct(datum, `${selectedRow}${selectedCol}`);
     }
   }, [selectedCol, selectedRow, datum, isEnabled, setDatumInMemoryAct]);
 
   // read datum from memory if address is already selected
   useEffect(() => {
-    if (selectedRow && selectedCol
-      && memoryState === MEMORY_MODE.READ
-    ) {
+    if (selectedRow && selectedCol && memoryState === MEMORY_MODE.READ) {
       if (isEnabled === MEMORY_STATE.ENABLED) setDatum(memorizedInfo[parseInt(address, 2)].datum);
-      else setDatum(PIN_STATE.OFF.repeat(dataWidth))
+      else setDatum(PIN_STATE.OFF.repeat(dataWidth));
     }
   }, [memoryState, memorizedInfo, address, selectedRow, selectedCol, datum, isEnabled]);
 
@@ -166,20 +161,20 @@ export const useReadWriteMemoryDatum = () => {
       setSelectedRowInMemoryAct(undefined);
       setSelectedColInMemoryAct(undefined);
     }
-  }, [isRasCasEnabled, setSelectedColInMemoryAct, setSelectedColInMemoryAct])
+  }, [isRasCasEnabled, setSelectedColInMemoryAct, setSelectedColInMemoryAct]);
 
   // TODO: fix error somewhere here (RAS / CAS second enter)
   useEffect(() => {
     if (!currentTacts && (!isRasCasEnabled || !isRas) && casAddr) {
-      console.log("writing col ->", {casAddr})
+      console.log("writing col ->", { casAddr });
       setSelectedColInMemoryAct(casAddr);
     }
-  }, [isRasCasEnabled, isRas, casAddr, currentTacts, setSelectedColInMemoryAct ])
+  }, [isRasCasEnabled, isRas, casAddr, currentTacts, setSelectedColInMemoryAct]);
 
   useEffect(() => {
-      if (!currentTacts && (!isRasCasEnabled || isRas) && rasAddr) {
-        console.log("writing row ->", {rasAddr})
-        setSelectedRowInMemoryAct(rasAddr)
-     }
+    if (!currentTacts && (!isRasCasEnabled || isRas) && rasAddr) {
+      console.log("writing row ->", { rasAddr });
+      setSelectedRowInMemoryAct(rasAddr);
+    }
   }, [isRasCasEnabled, isRas, rasAddr, currentTacts, setSelectedRowInMemoryAct]);
 };

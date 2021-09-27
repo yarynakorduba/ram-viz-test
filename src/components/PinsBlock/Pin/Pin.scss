@@ -1,0 +1,50 @@
+@keyframes emphasise {
+  0% {
+    font-weight: 600;
+  }
+  100% {
+    font-weight: 400;
+  }
+}
+
+.Pin {
+  &__pinSignificance {
+    fill: var(--text-primary);
+    opacity: 0.7;
+    font-size: 0.675rem;
+  }
+
+  &__pinLabel {
+    font-family: "Roboto Mono", monospace;
+    fill: var(--cta);
+
+    &_selected {
+      animation: emphasise 0.15s forwards;
+      animation-direction: reverse;
+    }
+    &_disabled {
+      fill: var(--text-primary);
+    }
+  }
+
+  &__pinArea {
+    cursor: pointer;
+    fill: transparent;
+    &_disabled {
+      cursor: default;
+    }
+  }
+
+  &__pinLine {
+    stroke: var(--text-gray);
+
+    &_long {
+      stroke-dasharray: 100 100;
+      transition: 1s ease-in;
+    }
+    &_short {
+      stroke-dasharray: 25 100;
+      transition: 1s ease-in;
+    }
+  }
+}

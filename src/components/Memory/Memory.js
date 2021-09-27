@@ -44,10 +44,13 @@ const Memory = () => {
   const [, { totalRows, totalColumns }] = useCellOrder();
 
   const renderColumnHeader = (text, x, y) => (
-    <text className={b("header")} x={x} y={y}>{text}</text>
+    <text className={b("header")} x={x} y={y}>
+      {text}
+    </text>
   );
 
-  const renderRowFrame = () => new Array(totalRows).fill("").map((r, index) => {
+  const renderRowFrame = () =>
+    new Array(totalRows).fill("").map((r, index) => {
       const { x, y } = getRowCoordinates(index);
       const isRowSelected = displayType === "matrix" && index === parseInt(selectedRow, 2);
       return (
@@ -60,9 +63,10 @@ const Memory = () => {
           className={b("row", [isRowSelected && "selected"])}
         />
       );
-    })
+    });
 
-  const renderColFrame = () => new Array(totalColumns).fill("").map((r, index) => {
+  const renderColFrame = () =>
+    new Array(totalColumns).fill("").map((r, index) => {
       const { x, y } = getColCoordinates(index);
       const isColSelected = displayType === "matrix" && index === parseInt(selectedColumn, 2);
 
@@ -78,7 +82,8 @@ const Memory = () => {
       );
     });
 
-  const renderMemoryView = () => memorizedInfo.map((cell, cellIndex) => {
+  const renderMemoryView = () =>
+    memorizedInfo.map((cell, cellIndex) => {
       const { cellX, cellY, textX, textY } = getCellCoordinates(cellIndex);
 
       const selectedAddressStyles =
@@ -96,11 +101,7 @@ const Memory = () => {
                 height={cellHeight}
                 className={b("cellAddress", [selectedAddressStyles, dirtyAddressStyles])}
               ></rect>
-              <text
-                className={b("addressLabel")}
-                x={cellX - cellMargin}
-                y={cellY + (cellHeight + cellMargin) / 2}
-              >
+              <text className={b("addressLabel")} x={cellX - cellMargin} y={cellY + (cellHeight + cellMargin) / 2}>
                 {cellIndex}
               </text>
             </g>
@@ -119,7 +120,7 @@ const Memory = () => {
           </g>
         </g>
       );
-    })
+    });
 
   return (
     <div className={b()}>

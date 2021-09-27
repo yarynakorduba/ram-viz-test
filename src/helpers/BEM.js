@@ -12,19 +12,21 @@ const getBEMPAth: GetBEMPAth = (b, e, m) => {
   return `${base} ${m.reduce((str, m) => `${str} ${base}${MODIFIER_SEPARATOR}${m}`, "")}`;
 };
 
-const b: B = (b) => (elementName, modifiers = []) => {
-  modifiers = typeof elementName === "string" ? modifiers : elementName || [];
+const b: B =
+  (b) =>
+  (elementName, modifiers = []) => {
+    modifiers = typeof elementName === "string" ? modifiers : elementName || [];
 
-  return getBEMPAth(
-    b,
-    typeof elementName === "string" ? elementName : "",
-    Array.isArray(modifiers)
-      ? modifiers.filter(Boolean)
-      : Object.entries(modifiers)
-          .filter(([, value]) => Boolean(value))
-          .map(([key]) => key)
-  );
-};
+    return getBEMPAth(
+      b,
+      typeof elementName === "string" ? elementName : "",
+      Array.isArray(modifiers)
+        ? modifiers.filter(Boolean)
+        : Object.entries(modifiers)
+            .filter(([, value]) => Boolean(value))
+            .map(([key]) => key)
+    );
+  };
 
 export default b;
 

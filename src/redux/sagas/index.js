@@ -1,4 +1,6 @@
 import { takeEvery, put, all, select } from "redux-saga/effects";
+import { compose } from "ramda";
+
 import {
   setSelectedRowInMemory,
   setSelectedColInMemory,
@@ -8,13 +10,14 @@ import {
   setCurrentTacts,
   SET_CLOCK_PIN,
   SET_IS_TACTING_ENABLED,
-  resetMemory,
   WRITE_DATUM_IN_MEMORY,
   SET_PINS_WIDTH,
+  setMemory,
 } from "../actions";
 import { PINS, PIN_STATE } from "../../helpers/consts";
 import { selectIsRasCasEnabled, selectIsTactingEnabled } from "../reducers/visualizationSettings.red";
-import { selectTacts, selectCurrentTacts, selectAddressWidth } from "../reducers/pinsInfo.red";
+import { selectTacts, selectCurrentTacts, selectAddressWidth, selectDataWidth } from "../reducers/pinsInfo.red";
+import { selectMemory } from "../reducers/memory.red";
 
 function* resetAddressRowAndCol(data) {
   // if tacting is not enabled, we can write the data into the column right away
@@ -27,8 +30,21 @@ function* resetAddressRowAndCol(data) {
 }
 
 function* onWidthChange() {
-  const width = yield select(selectAddressWidth);
-  resetMemory({ width });
+  const addressWidth = yield select(selectAddressWidth);
+  const dataWidth = yield select(selectDataWidth);
+  const memorizedInfo = yield select(selectMemory);
+
+  if (addressWidth) {
+    const updatedMemory = compose(
+      (memory) => memory.map((memoryCell, index) => memorizedInfo[index] || memoryCell),
+      (memory) =>
+        memory.fill({
+          isDirty: false,
+          datum: PIN_STATE.OFF.repeat(dataWidth),
+        })
+    )(new Array(Math.pow(2, addressWidth)));
+    yield put(setMemory(updatedMemory));
+  }
 }
 
 function* enableRasCasPins(action) {
@@ -73,6 +89,5 @@ export default function* rootSaga() {
     takeEvery(SET_IS_TACTING_ENABLED, onSetTacting),
     takeEvery(SET_CLOCK_PIN, updateNumberOfTacts),
     takeEvery(SET_PINS_WIDTH, onWidthChange),
-    
   ]);
 }

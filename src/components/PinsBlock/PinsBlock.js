@@ -43,6 +43,7 @@ const PinsBlock = ({ binaryData, setBinaryData, isDisabled = false }) => {
       const significance = getIsFirstOrLastPin(id) && (id === 0 ? "MSB" : "LSB");
       return (
         <Pin
+          key={id}
           id={id}
           pinState={pin}
           pinWidth={pinWidth}

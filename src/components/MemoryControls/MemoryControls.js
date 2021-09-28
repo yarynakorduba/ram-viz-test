@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useAction } from "../../hooks/reactRedux.hks";
 
-import { useControlMemorySize, useControlMemoryDatumWidth, useReadWriteMemoryDatum } from "../../hooks";
+import { useControlMemoryDatumWidth, useReadWriteMemoryDatum } from "../../hooks";
 import DataControls from "./DataControls";
 import AddressControls from "./AddressControls";
 import BEM from "../../helpers/BEM";
@@ -26,7 +26,6 @@ const MemoryControls = () => {
   const setIsPinNotationClassicalAct = useAction(setIsPinNotationClassical);
   const isPinNotationClassical = useSelector(selectIsPinNotationClassical);
 
-  useControlMemorySize();
   useControlMemoryDatumWidth();
   useReadWriteMemoryDatum();
 

@@ -29,28 +29,6 @@ import { selectMemory, selectSelectedRow, selectSelectedColumn } from "../redux/
 import { MEMORY_MODE, MEMORY_STATE, PINS, PIN_STATE } from "../helpers/consts";
 import { selectIsRasCasEnabled } from "../redux/reducers/visualizationSettings.red";
 
-export const useControlMemorySize = () => {
-  const setMemoryAct = useAction(setMemory);
-
-  const dataWidth = useSelector(selectDataWidth);
-  const addressWidth = useSelector(selectAddressWidth);
-  const memorizedInfo = useSelector(selectMemory);
-
-  useEffect(() => {
-    if (addressWidth) {
-      compose(
-        setMemoryAct,
-        (memory) => memory.map((memoryCell, index) => memorizedInfo[index] || memoryCell),
-        (memory) =>
-          memory.fill({
-            isDirty: false,
-            datum: PIN_STATE.OFF.repeat(dataWidth),
-          })
-      )(new Array(Math.pow(2, addressWidth)));
-    }
-  }, [addressWidth, dataWidth, setMemoryAct]);
-};
-
 // This hook determines cell row and column order in matrix view
 export const useCellOrder = () => {
   const addressLength = useSelector(selectAddressWidth);

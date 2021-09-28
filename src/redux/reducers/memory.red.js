@@ -16,12 +16,6 @@ const initialState = {
 const memory = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case RESET_MEMORY: {
-      return {
-        memoryArray: new Array(payload.width || 16).fill({ datum: "0000", isDirty: false }),
-        selectedAddress: { address: undefined, row: undefined, col: undefined },
-      };
-    }
     case SET_SELECTED_ADDRESS_IN_MEMORY: {
       return {
         ...state,

@@ -95,7 +95,7 @@ export const selectData = (state) => path(["pinsInfo", "data"], state);
 export const selectDataWidth = (state) => path(["pinsInfo", "dataWidth"], state);
 export const selectAddressWidth = (state) => path(["pinsInfo", "addressWidth"], state);
 export const selectEnabled = (state) => path(["pinsInfo", "enabled"], state);
-export const selectMemoryState = (state) => path(["pinsInfo", "readWrite"], state);
+export const selectMemoryMode = (state) => path(["pinsInfo", "readWrite"], state);
 export const selectClock = (state) => path(["pinsInfo", "clock"], state);
 export const selectTacts = (state) => path(["pinsInfo", "tacts"], state);
 export const selectCurrentTacts = (state) => path(["pinsInfo", "currentTacts"], state);

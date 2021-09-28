@@ -73,5 +73,6 @@ export default function* rootSaga() {
     takeEvery(SET_IS_TACTING_ENABLED, onSetTacting),
     takeEvery(SET_CLOCK_PIN, updateNumberOfTacts),
     takeEvery(SET_PINS_WIDTH, onWidthChange),
+    
   ]);
 }

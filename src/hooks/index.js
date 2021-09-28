@@ -17,7 +17,7 @@ import {
   selectAddressWidth,
   selectAddress,
   selectData,
-  selectMemoryState,
+  selectMemoryMode,
   selectCurrentTacts,
   selectClock,
   selectAddressColPins,
@@ -123,7 +123,7 @@ export const useReadWriteMemoryDatum = () => {
   const casAddr = useSelector(selectAddressColPins);
   const dataWidth = useSelector(selectDataWidth);
   const datum = useSelector(selectData);
-  const memoryState = useSelector(selectMemoryState);
+  const memoryMode = useSelector(selectMemoryMode);
   const isEnabled = useSelector(selectEnabled);
   const isRasCasEnabled = useSelector(selectIsRasCasEnabled);
   const currentTacts = useSelector(selectCurrentTacts);
@@ -135,10 +135,10 @@ export const useReadWriteMemoryDatum = () => {
 
   // if memory state has been changed between read and write, reset the data
   useEffect(() => {
-    if (memoryState && currentTacts !== 0) {
+    if (memoryMode && currentTacts !== 0) {
       setDatum(PIN_STATE.OFF.repeat(dataWidth));
     }
-  }, [memoryState]);
+  }, [memoryMode]);
 
   // update datum in memory if address is already selected
   useEffect(() => {
@@ -146,7 +146,7 @@ export const useReadWriteMemoryDatum = () => {
       selectedRow &&
       selectedCol &&
       isEnabled === MEMORY_STATE.ENABLED &&
-      memoryState === MEMORY_MODE.WRITE &&
+      memoryMode === MEMORY_MODE.WRITE &&
       currentTacts === 0
     ) {
       setDatumInMemoryAct(datum, `${selectedRow}${selectedCol}`);
@@ -155,11 +155,11 @@ export const useReadWriteMemoryDatum = () => {
 
   // read datum from memory if address is already selected
   useEffect(() => {
-    if (selectedRow && selectedCol && memoryState === MEMORY_MODE.READ) {
+    if (selectedRow && selectedCol && memoryMode === MEMORY_MODE.READ) {
       if (isEnabled === MEMORY_STATE.ENABLED) setDatum(memorizedInfo[parseInt(address, 2)].datum);
       else setDatum(PIN_STATE.OFF.repeat(dataWidth));
     }
-  }, [memoryState, memorizedInfo, address, selectedRow, selectedCol, datum, isEnabled]);
+  }, [memoryMode, memorizedInfo, address, selectedRow, selectedCol, datum, isEnabled]);
 
   useEffect(() => {
     if (isRasCasEnabled) {

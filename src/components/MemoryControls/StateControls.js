@@ -4,13 +4,13 @@ import BEM from "../../helpers/BEM";
 import { useAction } from "../../hooks/reactRedux.hks";
 import { setPins } from "../../redux/actions";
 import { useSelector } from "react-redux";
-import { selectMemoryState, selectEnabled } from "../../redux/reducers/pinsInfo.red";
+import { selectMemoryMode, selectEnabled } from "../../redux/reducers/pinsInfo.red";
 import { MEMORY_MODE, MEMORY_STATE, PINS } from "../../helpers/consts";
 
 const b = BEM("MemoryControls");
 
 const StateControls = () => {
-  const memoryState = useSelector(selectMemoryState);
+  const memoryMode = useSelector(selectMemoryMode);
   const enabled = useSelector(selectEnabled);
 
   const setPinsAct = useAction(setPins);
@@ -31,20 +31,20 @@ const StateControls = () => {
       <div className={b("readWriteBlock")}>
         <label className={b("readWriteLabel")}>
           <span
-            className={b("read", [memoryState === MEMORY_MODE.READ && "enabled"])}
+            className={b("read", [memoryMode === MEMORY_MODE.READ && "enabled"])}
             onClick={() => setMemoryState(MEMORY_MODE.READ)}
           >
             Read
           </span>
           /
           <span
-            className={b("write", [memoryState === MEMORY_MODE.WRITE && "enabled"])}
+            className={b("write", [memoryMode === MEMORY_MODE.WRITE && "enabled"])}
             onClick={() => setMemoryState(MEMORY_MODE.WRITE)}
           >
             Write
           </span>
         </label>
-        <Pins binaryData={memoryState} setBinaryData={setMemoryState} />
+        <Pins binaryData={memoryMode} setBinaryData={setMemoryState} />
       </div>
     </div>
   );

@@ -142,11 +142,16 @@ export const useReadWriteMemoryDatum = () => {
 
   // update datum in memory if address is already selected
   useEffect(() => {
-    console.log("====asele", { selectedRow, selectedCol });
-    if (selectedRow && selectedCol && isEnabled === MEMORY_STATE.ENABLED && memoryState === MEMORY_MODE.WRITE) {
+    if (
+      selectedRow &&
+      selectedCol &&
+      isEnabled === MEMORY_STATE.ENABLED &&
+      memoryState === MEMORY_MODE.WRITE &&
+      currentTacts === 0
+    ) {
       setDatumInMemoryAct(datum, `${selectedRow}${selectedCol}`);
     }
-  }, [selectedCol, selectedRow, datum, isEnabled, setDatumInMemoryAct]);
+  }, [currentTacts, selectedCol, selectedRow, datum, isEnabled, setDatumInMemoryAct]);
 
   // read datum from memory if address is already selected
   useEffect(() => {
@@ -163,16 +168,7 @@ export const useReadWriteMemoryDatum = () => {
     }
   }, [isRasCasEnabled, setSelectedColInMemoryAct, setSelectedColInMemoryAct]);
 
-  // TODO: fix error somewhere here (RAS / CAS second enter)
-  // useEffect(() => {
-  //   console.log("---col->>> ", { isRasCasEnabled, casAddr, rasAddr });
-  //   if (!currentTacts && (!isRasCasEnabled || !isRas) && casAddr) {
-  //     setSelectedColInMemoryAct(casAddr);
-  //   }
-  // }, [isRasCasEnabled, isRas, casAddr, currentTacts, setSelectedColInMemoryAct]);
-
   useEffect(() => {
-    console.log("--row-->>> ", { isRasCasEnabled, casAddr, rasAddr });
     if (!currentTacts && (!isRasCasEnabled || !isRas) && casAddr) {
       setSelectedColInMemoryAct(casAddr);
     }

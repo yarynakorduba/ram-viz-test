@@ -1,9 +1,7 @@
-import { takeEvery, put, all, select, call } from "redux-saga/effects";
+import { takeEvery, put, all, select } from "redux-saga/effects";
 import {
   setSelectedRowInMemory,
   setSelectedColInMemory,
-  setAddressRowPins,
-  setAddressColPins,
   SET_IS_RAS_CAS_ENABLED,
   setPins,
   toggleRasCas,
@@ -15,14 +13,17 @@ import {
   SET_PINS_WIDTH,
 } from "../actions";
 import { PINS, PIN_STATE } from "../../helpers/consts";
-import { selectIsRasCasEnabled } from "../reducers/visualizationSettings.red";
+import { selectIsRasCasEnabled, selectIsTactingEnabled } from "../reducers/visualizationSettings.red";
 import { selectTacts, selectCurrentTacts, selectAddressWidth } from "../reducers/pinsInfo.red";
 
 function* resetAddressRowAndCol(data) {
-  yield put(setSelectedRowInMemory(""));
-  yield put(setSelectedColInMemory(""));
-  // yield put(setAddressRowPins("00"));
-  // yield put(setAddressColPins("00"));
+  // if tacting is not enabled, we can write the data into the column right away
+  // this means, we do not need to erase the selected columns
+  const isTactingEnabled = yield select(selectIsTactingEnabled);
+  if (isTactingEnabled) {
+    yield put(setSelectedRowInMemory(undefined));
+    yield put(setSelectedColInMemory(undefined));
+  }
 }
 
 function* onWidthChange() {

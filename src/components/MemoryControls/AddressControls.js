@@ -39,14 +39,12 @@ export const AddressControls = () => {
 
   const setAddressLength = (width) => setPinsWidthAct(PINS.ADDRESS, width);
 
-  const handleInputAddressLength = ({ target }) => console.log(target.value) || setAddressLength(+target.value);
+  const handleInputAddressLength = ({ target }) => setAddressLength(+target.value);
 
   const handleSetAddress = (value) => {
-    console.log("=handleSetAddress==>>> ", slice(0, value.length / 2, value), slice(value.length / 2, -1, value));
     setAddressRowPinsAct(slice(0, value.length / 2, value));
     setAddressColPinsAct(slice(value.length / 2, value.length, value));
   };
-  console.log("addressLength");
   const padLength = Math.max(addressLength - addressRow.length - addressColumn.length, 0);
   const addressPins = `${"0".repeat(padLength)}${addressRow}${addressColumn}`;
 

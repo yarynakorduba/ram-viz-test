@@ -6,7 +6,7 @@ import { setTacts } from "../../redux/actions";
 import { selectClock, selectCurrentTacts } from "../../redux/reducers/pinsInfo.red";
 import { useSelector } from "react-redux";
 import { selectTacts } from "../../redux/reducers/pinsInfo.red";
-import { useTacting } from "../../hooks";
+import { useTacting } from "../../hooks/memoryView.hks";
 import { PIN_STATE } from "../../helpers/consts";
 import { selectIsTactingEnabled } from "../../redux/reducers/visualizationSettings.red";
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useAction } from "../../hooks/reactRedux.hks";
 
-import { useControlMemoryDatumWidth, useReadWriteMemoryDatum } from "../../hooks";
+import { useReadWriteMemoryDatum, useControlMemoryDatumWidth } from '../../hooks/memoryView.hks';
 import DataControls from "./DataControls";
 import AddressControls from "./AddressControls";
 import BEM from "../../helpers/BEM";

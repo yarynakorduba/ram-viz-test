@@ -12,8 +12,7 @@ import {
 import { useAction } from "../../hooks/reactRedux.hks";
 import { setMemoryDisplayType } from "../../redux/actions";
 import { selectMemoryDisplayType } from "../../redux/reducers/visualizationSettings.red";
-import { useCellOrder } from "../../hooks";
-import { useMemoryCSSMeasures } from "../../hooks/htmlElements.hks";
+import { useCellOrder, useMemoryCSSMeasures } from "../../hooks/memoryView.hks";
 import ToggleButtons from "../ToggleButtons";
 import { VIEW_OPTIONS } from "../../helpers/consts";
 

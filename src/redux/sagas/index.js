@@ -52,7 +52,6 @@ function* resetAddressRowAndCol() {
     yield call(delay, 1000);
     yield put(setSelectedRowInMemory(undefined));
     yield put(setSelectedColInMemory(undefined));
-    console.log("this happened!");
   }
 }
 

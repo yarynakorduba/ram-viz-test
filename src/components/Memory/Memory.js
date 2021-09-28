@@ -54,7 +54,6 @@ const Memory = () => {
       const isShowSelected = isRasCasEnabled ? selectedRow === preselectedRow : selectedAddress === preselectedAddress;
       const isSelected = displayType === "matrix" && index === parseInt(selectedRow, 2);
       const isPreselected = displayType === "matrix" && index === parseInt(preselectedRow, 2);
-      console.log("=====> is preselected", { preselectedRow, preselectedCol, isPreselected });
       return (
         <rect
           key={`${x}-${y}`}

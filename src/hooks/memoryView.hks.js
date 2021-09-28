@@ -220,13 +220,6 @@ export const useReadWriteMemoryDatum = () => {
   ]);
 
   useEffect(() => {
-    if (isRasCasEnabled) {
-      setSelectedRowInMemoryAct(undefined);
-      setSelectedColInMemoryAct(undefined);
-    }
-  }, [isRasCasEnabled, setSelectedColInMemoryAct, setSelectedColInMemoryAct]);
-
-  useEffect(() => {
     if (!currentTacts && (!isRasCasEnabled || !isRas) && casAddr) {
       setSelectedColInMemoryAct(casAddr);
     }

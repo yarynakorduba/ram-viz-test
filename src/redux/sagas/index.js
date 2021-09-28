@@ -4,6 +4,7 @@ import { compose } from "ramda";
 import {
   setSelectedRowInMemory,
   setSelectedColInMemory,
+  setIsTactingEnabled,
   SET_IS_RAS_CAS_ENABLED,
   setPins,
   toggleRasCas,
@@ -14,7 +15,6 @@ import {
   SET_PINS_WIDTH,
   setMemory,
   READ_DATUM_FROM_MEMORY,
-  readDatumFromMemory,
 } from "../actions";
 import { MEMORY_STATE, PINS, PIN_STATE } from "../../helpers/consts";
 import { selectIsRasCasEnabled, selectIsTactingEnabled } from "../reducers/visualizationSettings.red";
@@ -76,9 +76,8 @@ function* onWidthChange() {
 
 function* enableRasCasPins(action) {
   if (action.payload.isEnabled) {
-    const ramLatency = yield select(selectTacts);
     yield put(setPins(PINS.RAS, PIN_STATE.ON));
-    yield put(setCurrentTacts(ramLatency));
+    yield put(setIsTactingEnabled(true));
   }
 }
 
@@ -87,6 +86,12 @@ function* onSetTacting(action) {
     const ramLatency = yield select(selectTacts);
     yield put(setCurrentTacts(ramLatency));
   }
+  // If tacting is NOT enabled, we can write the data into the column right away.
+  // This means, we do not need to erase the selected columns.
+  // Otherwise, we need to erase selected rows and columns, because selection should happen
+  // only after a predefined number of tacts.
+  yield put(setSelectedRowInMemory(undefined));
+  yield put(setSelectedColInMemory(undefined));
 }
 
 function* updateNumberOfTacts(action) {
@@ -97,7 +102,6 @@ function* updateNumberOfTacts(action) {
   if (clock === PIN_STATE.ON) {
     yield put(setCurrentTacts(currentTacts - 1));
   }
-  console.log("-====currentTacts --> ", { currentTacts, clock });
   if (currentTacts === 0 && clock === PIN_STATE.OFF) {
     // Reset current tacts to ramLatency, defined by hardware producer
     yield put(setCurrentTacts(ramLatency));

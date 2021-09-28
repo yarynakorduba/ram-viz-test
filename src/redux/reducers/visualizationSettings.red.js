@@ -30,7 +30,6 @@ const visualizationSettings = (state = initialState, action) => {
     case SET_IS_RAS_CAS_ENABLED:
       return {
         ...state,
-        isTactingEnabled: payload.isEnabled ? payload.isEnabled : state.isTactingEnabled,
         isRasCasEnabled: payload.isEnabled,
       };
     case SET_MEMORY_DISPLAY_TYPE:

@@ -9,7 +9,7 @@ import { path, update } from "ramda";
 
 const initialState = {
   memoryArray: new Array(16).fill({ datum: "0000", isDirty: false }),
-  selectedAddress: { address: "0000", row: "00", col: "00" },
+  selectedAddress: { address: undefined, row: undefined, col: undefined },
 };
 
 const memory = (state = initialState, action) => {

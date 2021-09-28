@@ -3,15 +3,10 @@ import BEM from "../../helpers/BEM";
 
 import { useSelector } from "react-redux";
 import { selectMemory, selectSelectedColumn, selectSelectedRow } from "../../redux/reducers/memory.red";
-import {
-  selectAddressPins,
-  selectAddressRowPins,
-  selectAddressColPins,
-  selectAddressWidth,
-} from "../../redux/reducers/pinsInfo.red";
+import { selectAddressRowPins, selectAddressColPins, selectAddressWidth } from "../../redux/reducers/pinsInfo.red";
 import { useAction } from "../../hooks/reactRedux.hks";
 import { setMemoryDisplayType } from "../../redux/actions";
-import { selectMemoryDisplayType } from "../../redux/reducers/visualizationSettings.red";
+import { selectIsRasCasEnabled, selectMemoryDisplayType } from "../../redux/reducers/visualizationSettings.red";
 import { useCellOrder, useMemoryCSSMeasures } from "../../hooks/memoryView.hks";
 import ToggleButtons from "../ToggleButtons";
 import { VIEW_OPTIONS } from "../../helpers/consts";
@@ -31,7 +26,8 @@ const Memory = () => {
   const selectedRow = useSelector(selectSelectedRow);
   const addressWidth = useSelector(selectAddressWidth);
   const memoryDisplayType = useSelector(selectMemoryDisplayType);
-  const preselectedAddress = useSelector(selectAddressPins);
+  const isRasCasEnabled = useSelector(selectIsRasCasEnabled);
+  const preselectedAddress = `${preselectedRow}${preselectedCol}`;
   const selectedAddress = `${selectedRow}${selectedColumn}`;
   const isFullAddressSelected = useMemo(() => selectedAddress.length === addressWidth, [addressWidth, selectedAddress]);
 
@@ -55,8 +51,10 @@ const Memory = () => {
   const renderRowFrame = () =>
     new Array(totalRows).fill("").map((r, index) => {
       const { x, y } = getRowCoordinates(index);
+      const isShowSelected = isRasCasEnabled ? selectedRow === preselectedRow : selectedAddress === preselectedAddress;
       const isSelected = displayType === "matrix" && index === parseInt(selectedRow, 2);
       const isPreselected = displayType === "matrix" && index === parseInt(preselectedRow, 2);
+      console.log("=====> is preselected", { preselectedRow, preselectedCol, isPreselected });
       return (
         <rect
           key={`${x}-${y}`}
@@ -65,7 +63,7 @@ const Memory = () => {
           y={y}
           width={rowWidth - 2}
           height={rowHeight - 2}
-          className={b("row", [isSelected && "selected", !isSelected && isPreselected && "preselected"])}
+          className={b("row", [(isShowSelected && isSelected && "selected") || (isPreselected && "preselected")])}
         />
       );
     });
@@ -73,6 +71,11 @@ const Memory = () => {
   const renderColFrame = () =>
     new Array(totalColumns).fill("").map((r, index) => {
       const { x, y } = getColCoordinates(index);
+
+      const isShowSelected = isRasCasEnabled
+        ? selectedColumn === preselectedCol
+        : selectedAddress === preselectedAddress;
+
       const isSelected = displayType === "matrix" && index === parseInt(selectedColumn, 2);
       const isPreselected = displayType === "matrix" && index === parseInt(preselectedCol, 2);
 
@@ -84,7 +87,7 @@ const Memory = () => {
           x={x}
           width={colWidth - 2}
           height={colHeight - 2}
-          className={b("column", [isSelected && "selected", !isSelected && isPreselected && "preselected"])}
+          className={b("column", [(isShowSelected && isSelected && "selected") || (isPreselected && "preselected")])}
         />
       );
     });
@@ -98,7 +101,6 @@ const Memory = () => {
         selectedAddress === preselectedAddress && parseInt(selectedAddress, 2) === cellIndex && isFullAddressSelected
           ? "selected"
           : "";
-
       const dirtyAddressStyles = cell.isDirty ? "dirty" : "";
 
       return (

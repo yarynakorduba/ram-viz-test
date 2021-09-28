@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import BEM from "../../helpers/BEM";
 
 import { useSelector } from "react-redux";
-import { selectMemory } from "../../redux/reducers/memory.red";
+import { selectMemory, selectSelectedColumn, selectSelectedRow } from "../../redux/reducers/memory.red";
 import {
-  selectAddress,
+  selectAddressPins,
   selectAddressRowPins,
   selectAddressColPins,
   selectAddressWidth,
@@ -25,11 +25,15 @@ const Memory = () => {
 
   const memorizedInfo = useSelector(selectMemory);
   const displayType = useSelector(selectMemoryDisplayType);
-  const selectedAddress = useSelector(selectAddress);
-  const selectedRow = useSelector(selectAddressRowPins);
-  const selectedColumn = useSelector(selectAddressColPins);
+  const preselectedCol = useSelector(selectAddressColPins);
+  const selectedColumn = useSelector(selectSelectedColumn);
+  const preselectedRow = useSelector(selectAddressRowPins);
+  const selectedRow = useSelector(selectSelectedRow);
   const addressWidth = useSelector(selectAddressWidth);
   const memoryDisplayType = useSelector(selectMemoryDisplayType);
+  const preselectedAddress = useSelector(selectAddressPins);
+  const selectedAddress = `${selectedRow}${selectedColumn}`;
+  const isFullAddressSelected = useMemo(() => selectedAddress.length === addressWidth, [addressWidth, selectedAddress]);
 
   const [
     getCellCoordinates,
@@ -51,15 +55,17 @@ const Memory = () => {
   const renderRowFrame = () =>
     new Array(totalRows).fill("").map((r, index) => {
       const { x, y } = getRowCoordinates(index);
-      const isRowSelected = displayType === "matrix" && index === parseInt(selectedRow, 2);
+      const isSelected = displayType === "matrix" && index === parseInt(selectedRow, 2);
+      const isPreselected = displayType === "matrix" && index === parseInt(preselectedRow, 2);
       return (
         <rect
           key={`${x}-${y}`}
+          transform="translate(1 1)"
           x={x}
           y={y}
-          width={rowWidth}
-          height={rowHeight}
-          className={b("row", [isRowSelected && "selected"])}
+          width={rowWidth - 2}
+          height={rowHeight - 2}
+          className={b("row", [isSelected && "selected", !isSelected && isPreselected && "preselected"])}
         />
       );
     });
@@ -67,16 +73,18 @@ const Memory = () => {
   const renderColFrame = () =>
     new Array(totalColumns).fill("").map((r, index) => {
       const { x, y } = getColCoordinates(index);
-      const isColSelected = displayType === "matrix" && index === parseInt(selectedColumn, 2);
+      const isSelected = displayType === "matrix" && index === parseInt(selectedColumn, 2);
+      const isPreselected = displayType === "matrix" && index === parseInt(preselectedCol, 2);
 
       return (
         <rect
           key={`${x}-${y}`}
-          x={x}
+          transform="translate(1 1)"
           y={y}
-          width={colWidth}
-          height={colHeight}
-          className={b("column", [isColSelected && "selected"])}
+          x={x}
+          width={colWidth - 2}
+          height={colHeight - 2}
+          className={b("column", [isSelected && "selected", !isSelected && isPreselected && "preselected"])}
         />
       );
     });
@@ -85,8 +93,12 @@ const Memory = () => {
     memorizedInfo.map((cell, cellIndex) => {
       const { cellX, cellY, textX, textY } = getCellCoordinates(cellIndex);
 
+      const preselectedAddressStyles = parseInt(preselectedAddress, 2) === cellIndex ? "preselected" : "";
       const selectedAddressStyles =
-        parseInt(selectedAddress, 2) === cellIndex && selectedAddress.length === addressWidth ? "selected" : "";
+        selectedAddress === preselectedAddress && parseInt(selectedAddress, 2) === cellIndex && isFullAddressSelected
+          ? "selected"
+          : "";
+
       const dirtyAddressStyles = cell.isDirty ? "dirty" : "";
 
       return (
@@ -98,7 +110,7 @@ const Memory = () => {
                 y={cellY}
                 width={cellWidth}
                 height={cellHeight}
-                className={b("cellAddress", [selectedAddressStyles, dirtyAddressStyles])}
+                className={b("cellAddress", [selectedAddressStyles || preselectedAddressStyles, dirtyAddressStyles])}
               ></rect>
               <text className={b("addressLabel")} x={cellX - cellMargin} y={cellY + (cellHeight + cellMargin) / 2}>
                 {cellIndex}
@@ -111,7 +123,7 @@ const Memory = () => {
               y={cellY}
               width={cellWidth}
               height={cellHeight}
-              className={b("cell", [selectedAddressStyles, dirtyAddressStyles])}
+              className={b("cell", [selectedAddressStyles || preselectedAddressStyles, dirtyAddressStyles])}
             />
             <text className={b("dataLabel")} x={textX} y={textY} fontSize={`${fontSize}px`}>
               {cell.datum}
@@ -130,12 +142,14 @@ const Memory = () => {
         handleSelect={setMemoryDisplayTypeAct}
       />
       <div className={b("memoryContainer")}>
-        <svg x={0} y={0} style={{ minHeight: containerHeight, width: containerWidth }}>
+        <svg style={{ minHeight: containerHeight, width: containerWidth }}>
           <g>
-            <g>
-              {renderColumnHeader("Address", cellWidth - cellMargin, headerHeight / 2)}
-              {renderColumnHeader("Data", cellWidth * 2, headerHeight / 2)}
-            </g>
+            {displayType === "table" && (
+              <g>
+                {renderColumnHeader("Address", cellWidth - cellMargin, headerHeight / 2)}
+                {renderColumnHeader("Data", cellWidth * 2, headerHeight / 2)}
+              </g>
+            )}
             <g>
               {renderMemoryView()}
               {renderRowFrame()}

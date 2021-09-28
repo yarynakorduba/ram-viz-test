@@ -1,28 +1,25 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { slice } from "ramda";
+
 import { useAction } from "../../hooks/reactRedux.hks";
-import { setPinsTypeWidth, setPins, setAddressRowPins, setAddressColPins } from "../../redux/actions";
+import { setPinsTypeWidth, setAddressRowPins, setAddressColPins } from "../../redux/actions";
 import {
-  selectAddress,
   selectAddressWidth,
   selectRas,
   selectCas,
   selectAddressColPins,
   selectAddressRowPins,
-  selectCurrentTacts,
 } from "../../redux/reducers/pinsInfo.red";
-
-import BEM from "../../helpers/BEM";
-
 import Pins from "../PinsBlock";
 import { selectIsRasCasEnabled } from "../../redux/reducers/visualizationSettings.red";
 import { PINS, PIN_STATE } from "../../helpers/consts";
 
+import BEM from "../../helpers/BEM";
+
 const b = BEM("MemoryControls");
 
 export const AddressControls = () => {
-  const address = useSelector(selectAddress);
   const addressRow = useSelector(selectAddressRowPins);
   const addressColumn = useSelector(selectAddressColPins);
 
@@ -30,9 +27,7 @@ export const AddressControls = () => {
   const isRasCasEnabled = useSelector(selectIsRasCasEnabled);
   const ras = useSelector(selectRas);
   const cas = useSelector(selectCas);
-  const tacts = useSelector(selectCurrentTacts);
 
-  const setPinsAct = useAction(setPins);
   const setAddressRowPinsAct = useAction(setAddressRowPins);
   const setAddressColPinsAct = useAction(setAddressColPins);
   const setPinsWidthAct = useAction(setPinsTypeWidth);

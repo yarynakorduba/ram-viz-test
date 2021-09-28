@@ -4,7 +4,6 @@ import {
   SET_SELECTED_ADDRESS_IN_MEMORY,
   SET_SELECTED_ROW_IN_MEMORY,
   SET_SELECTED_COL_IN_MEMORY,
-  RESET_MEMORY,
 } from "../actions";
 import { path, update } from "ramda";
 
@@ -55,3 +54,4 @@ export const selectMemory = (state) => path(["memory", "memoryArray"], state);
 
 export const selectSelectedRow = (state) => path(["memory", "selectedAddress", "row"], state);
 export const selectSelectedColumn = (state) => path(["memory", "selectedAddress", "col"], state);
+export const selectSelectedAddress = (state) => path(["memory", "selectedAddress", "address"], state);

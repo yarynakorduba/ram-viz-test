@@ -14,9 +14,16 @@
   &__column {
     fill: transparent;
 
+    &_preselected {
+      stroke: var(--cta);
+      stroke-width: 2px;
+      opacity: 0.75;
+      stroke-dasharray: 20 25;
+    }
     &_selected {
       stroke: var(--cta);
       stroke-width: 2px;
+      opacity: 1;
     }
   }
 
@@ -30,7 +37,11 @@
     fill: #bbbbbb;
     transition: 0.35s;
     &_dirty {
-      fill: #8fbaff;
+      fill: #99befa;
+    }
+    &_preselected {
+      fill: var(--cta);
+      opacity: 0.7;
     }
     &_selected {
       fill: var(--cta);

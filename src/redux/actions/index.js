@@ -77,6 +77,13 @@ export const setDatumInMemory = (datum, address) => ({
   },
 });
 
+export const readDatumFromMemory = (address) => ({
+  type: READ_DATUM_FROM_MEMORY,
+  payload: {
+    address,
+  },
+});
+
 export const setMemory = (data) => {
   return {
     type: SET_MEMORY,

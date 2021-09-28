@@ -1,4 +1,4 @@
-import { takeEvery, put, all, select } from "redux-saga/effects";
+import { takeEvery, put, all, select, call } from "redux-saga/effects";
 import { compose } from "ramda";
 
 import {
@@ -13,19 +13,46 @@ import {
   WRITE_DATUM_IN_MEMORY,
   SET_PINS_WIDTH,
   setMemory,
+  READ_DATUM_FROM_MEMORY,
+  readDatumFromMemory,
 } from "../actions";
-import { PINS, PIN_STATE } from "../../helpers/consts";
+import { MEMORY_STATE, PINS, PIN_STATE } from "../../helpers/consts";
 import { selectIsRasCasEnabled, selectIsTactingEnabled } from "../reducers/visualizationSettings.red";
-import { selectTacts, selectCurrentTacts, selectAddressWidth, selectDataWidth } from "../reducers/pinsInfo.red";
+import {
+  selectTacts,
+  selectCurrentTacts,
+  selectAddressWidth,
+  selectDataWidth,
+  selectEnabled,
+} from "../reducers/pinsInfo.red";
 import { selectMemory } from "../reducers/memory.red";
 
-function* resetAddressRowAndCol(data) {
-  // if tacting is not enabled, we can write the data into the column right away
-  // this means, we do not need to erase the selected columns
+const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
+
+function* onReadDatumFromMemory(action) {
+  const {
+    payload: { address },
+  } = action;
+  const memory = yield select(selectMemory);
+  const dataWidth = yield select(selectDataWidth);
+  const isEnabled = yield select(selectEnabled);
+
+  if (isEnabled === MEMORY_STATE.ENABLED) yield put(setPins(PINS.DATA, memory[parseInt(address, 2)].datum));
+  else put(setPins(PINS.DATA, PIN_STATE.OFF.repeat(dataWidth)));
+}
+
+function* resetAddressRowAndCol() {
+  // If tacting is NOT enabled, we can write the data into the column right away.
+  // This means, we do not need to erase the selected columns.
+  // Otherwise, we need to erase selected rows and columns, because selection should happen
+  // only after a predefined number of tacts.
   const isTactingEnabled = yield select(selectIsTactingEnabled);
+
   if (isTactingEnabled) {
+    yield call(delay, 1000);
     yield put(setSelectedRowInMemory(undefined));
     yield put(setSelectedColInMemory(undefined));
+    console.log("this happened!");
   }
 }
 
@@ -56,7 +83,6 @@ function* enableRasCasPins(action) {
 }
 
 function* onSetTacting(action) {
-  // yield call(resetAddressRowAndCol);
   if (action.payload.isEnabled) {
     const ramLatency = yield select(selectTacts);
     yield put(setCurrentTacts(ramLatency));
@@ -71,7 +97,7 @@ function* updateNumberOfTacts(action) {
   if (clock === PIN_STATE.ON) {
     yield put(setCurrentTacts(currentTacts - 1));
   }
-
+  console.log("-====currentTacts --> ", { currentTacts, clock });
   if (currentTacts === 0 && clock === PIN_STATE.OFF) {
     // Reset current tacts to ramLatency, defined by hardware producer
     yield put(setCurrentTacts(ramLatency));
@@ -84,7 +110,8 @@ function* updateNumberOfTacts(action) {
 
 export default function* rootSaga() {
   yield all([
-    takeEvery(WRITE_DATUM_IN_MEMORY, resetAddressRowAndCol),
+    takeEvery([WRITE_DATUM_IN_MEMORY, READ_DATUM_FROM_MEMORY], resetAddressRowAndCol),
+    takeEvery(READ_DATUM_FROM_MEMORY, onReadDatumFromMemory),
     takeEvery(SET_IS_RAS_CAS_ENABLED, enableRasCasPins),
     takeEvery(SET_IS_TACTING_ENABLED, onSetTacting),
     takeEvery(SET_CLOCK_PIN, updateNumberOfTacts),

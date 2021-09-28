@@ -111,7 +111,7 @@ export const selectAddressColPins = (state) => {
   return path(["pinsInfo", "col"], state);
 };
 
-export const selectAddress = (state) => {
+export const selectAddressPins = (state) => {
   const addressRow = selectAddressRowPins(state);
   const addressColumn = selectAddressColPins(state);
   return `${addressRow}${addressColumn}`;

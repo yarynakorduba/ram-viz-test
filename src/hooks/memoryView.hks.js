@@ -12,11 +12,12 @@ import {
   setSelectedRowInMemory,
   setSelectedColInMemory,
   setClockPin,
+  readDatumFromMemory,
 } from "../redux/actions";
 import {
   selectAddressWidth,
   selectDataWidth,
-  selectAddress,
+  selectAddressPins,
   selectData,
   selectMemoryMode,
   selectCurrentTacts,
@@ -162,10 +163,11 @@ export const useReadWriteMemoryDatum = () => {
   const setPinsAct = useAction(setPins);
   const setSelectedRowInMemoryAct = useAction(setSelectedRowInMemory);
   const setSelectedColInMemoryAct = useAction(setSelectedColInMemory);
+  const readDatumFromMemoryAct = useAction(readDatumFromMemory);
 
   const memorizedInfo = useSelector(selectMemory);
   const setDatumInMemoryAct = useAction(setDatumInMemory);
-  const address = useSelector(selectAddress);
+  const address = useSelector(selectAddressPins);
   const rasAddr = useSelector(selectAddressRowPins);
   const casAddr = useSelector(selectAddressColPins);
   const dataWidth = useSelector(selectDataWidth);
@@ -202,11 +204,20 @@ export const useReadWriteMemoryDatum = () => {
 
   // read datum from memory if address is already selected
   useEffect(() => {
-    if (selectedRow && selectedCol && memoryMode === MEMORY_MODE.READ) {
-      if (isEnabled === MEMORY_STATE.ENABLED) setDatum(memorizedInfo[parseInt(address, 2)].datum);
-      else setDatum(PIN_STATE.OFF.repeat(dataWidth));
+    if (selectedRow && selectedCol && memoryMode === MEMORY_MODE.READ && currentTacts === 0) {
+      readDatumFromMemoryAct(address);
     }
-  }, [memoryMode, memorizedInfo, address, selectedRow, selectedCol, datum, isEnabled]);
+  }, [
+    currentTacts,
+    memoryMode,
+    memorizedInfo,
+    address,
+    selectedRow,
+    selectedCol,
+    datum,
+    isEnabled,
+    readDatumFromMemory,
+  ]);
 
   useEffect(() => {
     if (isRasCasEnabled) {

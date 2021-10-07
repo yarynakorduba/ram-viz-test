@@ -9,8 +9,8 @@ import { setMemoryDisplayType } from "../../redux/actions";
 import { selectIsRasCasEnabled, selectMemoryDisplayType } from "../../redux/reducers/visualizationSettings.red";
 import { useMemoryCSSMeasures } from "../../hooks/memoryView.hks";
 import ToggleButtons from "../ToggleButtons";
-import Frame from "./Frame";
 import { VIEW_OPTIONS } from "../../helpers/consts";
+import Frame from "./Frame";
 
 import "./Memory.scss";
 

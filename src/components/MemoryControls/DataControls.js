@@ -1,7 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useAction } from "../../hooks/reactRedux.hks";
 import { setPinsTypeWidth, setPins } from "../../redux/actions";
-import { useSelector } from "react-redux";
 import { selectData, selectDataWidth, selectMemoryMode } from "../../redux/reducers/pinsInfo.red";
 import { MEMORY_MODE, PINS } from "../../helpers/consts";
 import BEM from "../../helpers/BEM";

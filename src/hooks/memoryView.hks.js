@@ -92,6 +92,8 @@ export const useMemoryCSSMeasures = () => {
   const MIN_FONT_SIZE = 13;
   const MAX_FONT_SIZE = 20;
 
+  const rowMeasures = { width: containerWidth - cellMargin, height: cellHeight };
+  const colMeasures = { width: cellWidth, height: containerHeight - cellMargin };
   return [
     getCellPosition,
     getColPosition,
@@ -110,8 +112,8 @@ export const useMemoryCSSMeasures = () => {
           ? MIN_FONT_SIZE
           : cellWidth / dataLength,
     },
-    { rowWidth: containerWidth - cellMargin, rowHeight: cellHeight },
-    { colWidth: cellWidth, colHeight: containerHeight - cellMargin },
+    rowMeasures,
+    colMeasures,
   ];
 };
 

@@ -1,15 +1,16 @@
 import React, { useMemo } from "react";
-import BEM from "../../helpers/BEM";
-
 import { useSelector } from "react-redux";
+
+import BEM from "../../helpers/BEM";
 import { selectMemory, selectSelectedColumn, selectSelectedRow } from "../../redux/reducers/memory.red";
 import { selectAddressRowPins, selectAddressColPins, selectAddressWidth } from "../../redux/reducers/pinsInfo.red";
 import { useAction } from "../../hooks/reactRedux.hks";
 import { setMemoryDisplayType } from "../../redux/actions";
 import { selectIsRasCasEnabled, selectMemoryDisplayType } from "../../redux/reducers/visualizationSettings.red";
-import { useCellOrder, useMemoryCSSMeasures } from "../../hooks/memoryView.hks";
+import { useMemoryCSSMeasures } from "../../hooks/memoryView.hks";
 import ToggleButtons from "../ToggleButtons";
 import { VIEW_OPTIONS } from "../../helpers/consts";
+import Frame from "./Frame";
 
 import "./Memory.scss";
 
@@ -36,60 +37,30 @@ const Memory = () => {
     getColCoordinates,
     getRowCoordinates,
     { cellWidth, cellHeight, cellMargin, verticalOffset: headerHeight, containerWidth, containerHeight, fontSize },
-    { rowWidth, rowHeight },
-    { colWidth, colHeight },
+    rowMeasures,
+    colMeasures,
   ] = useMemoryCSSMeasures();
 
-  const [, { totalRows, totalColumns }] = useCellOrder();
+  const selectedRowIndex = parseInt(selectedRow, 2);
+  const preselectedRowIndex = parseInt(preselectedRow, 2);
+  const selectedColIndex = parseInt(selectedColumn, 2);
+  const preselectedColIndex = parseInt(preselectedCol, 2);
+
+  const selectedRowCoords = getRowCoordinates(selectedRowIndex);
+  const preselectedRowCoords = getRowCoordinates(preselectedRowIndex);
+  const selectedColCoords = getColCoordinates(selectedColIndex);
+  const preselectedColCoords = getColCoordinates(preselectedColIndex);
+
+  const isShowSelectedRow = isRasCasEnabled ? selectedRow === preselectedRow : selectedAddress === preselectedAddress;
+  const isShowSelectedCol = isRasCasEnabled
+    ? selectedColumn === preselectedCol
+    : selectedAddress === preselectedAddress;
 
   const renderColumnHeader = (text, x, y) => (
     <text className={b("header")} x={x} y={y}>
       {text}
     </text>
   );
-
-  const renderRowFrame = () =>
-    new Array(totalRows).fill("").map((r, index) => {
-      const { x, y } = getRowCoordinates(index);
-      const isShowSelected = isRasCasEnabled ? selectedRow === preselectedRow : selectedAddress === preselectedAddress;
-      const isSelected = displayType === "matrix" && index === parseInt(selectedRow, 2);
-      const isPreselected = displayType === "matrix" && index === parseInt(preselectedRow, 2);
-      return (
-        <rect
-          key={`${x}-${y}`}
-          transform="translate(1 1)"
-          x={x}
-          y={y}
-          width={rowWidth - 2}
-          height={rowHeight - 2}
-          className={b("row", [(isShowSelected && isSelected && "selected") || (isPreselected && "preselected")])}
-        />
-      );
-    });
-
-  const renderColFrame = () =>
-    new Array(totalColumns).fill("").map((r, index) => {
-      const { x, y } = getColCoordinates(index);
-
-      const isShowSelected = isRasCasEnabled
-        ? selectedColumn === preselectedCol
-        : selectedAddress === preselectedAddress;
-
-      const isSelected = displayType === "matrix" && index === parseInt(selectedColumn, 2);
-      const isPreselected = displayType === "matrix" && index === parseInt(preselectedCol, 2);
-
-      return (
-        <rect
-          key={`${x}-${y}`}
-          transform="translate(1 1)"
-          y={y}
-          x={x}
-          width={colWidth - 2}
-          height={colHeight - 2}
-          className={b("column", [(isShowSelected && isSelected && "selected") || (isPreselected && "preselected")])}
-        />
-      );
-    });
 
   const renderMemoryView = () =>
     memorizedInfo.map((cell, cellIndex) => {
@@ -153,8 +124,16 @@ const Memory = () => {
             )}
             <g>
               {renderMemoryView()}
-              {renderRowFrame()}
-              {renderColFrame()}
+              <Frame
+                measures={colMeasures}
+                coords={isShowSelectedCol ? selectedColCoords : preselectedColCoords}
+                isShowSelected={isShowSelectedCol}
+              />
+              <Frame
+                measures={rowMeasures}
+                coords={isShowSelectedRow ? selectedRowCoords : preselectedRowCoords}
+                isShowSelected={isShowSelectedRow}
+              />
             </g>
           </g>
         </svg>

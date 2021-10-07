@@ -4,7 +4,6 @@ import { compose } from "redux";
 import { map } from "ramda";
 
 import { selectMemoryDisplayType } from "../redux/reducers/visualizationSettings.red";
-import { useAction } from "./reactRedux.hks";
 import {
   setMemory,
   setPins,
@@ -30,6 +29,7 @@ import {
 import { selectMemory, selectSelectedRow, selectSelectedColumn } from "../redux/reducers/memory.red";
 import { MEMORY_MODE, MEMORY_STATE, PINS, PIN_STATE } from "../helpers/consts";
 import { selectIsRasCasEnabled } from "../redux/reducers/visualizationSettings.red";
+import { useAction } from "./reactRedux.hks";
 
 // This hook determines cell row and column order in matrix view
 export const useCellOrder = () => {
@@ -92,6 +92,8 @@ export const useMemoryCSSMeasures = () => {
   const MIN_FONT_SIZE = 13;
   const MAX_FONT_SIZE = 20;
 
+  const rowMeasures = { width: containerWidth - cellMargin, height: cellHeight };
+  const colMeasures = { width: cellWidth, height: containerHeight - cellMargin };
   return [
     getCellPosition,
     getColPosition,
@@ -110,8 +112,8 @@ export const useMemoryCSSMeasures = () => {
           ? MIN_FONT_SIZE
           : cellWidth / dataLength,
     },
-    { rowWidth: containerWidth - cellMargin, rowHeight: cellHeight },
-    { colWidth: cellWidth, colHeight: containerHeight - cellMargin },
+    rowMeasures,
+    colMeasures,
   ];
 };
 
@@ -130,7 +132,7 @@ export const useControlMemoryDatumWidth = () => {
         datum: cell.datum.padStart(dataWidth, PIN_STATE.OFF).slice(-dataWidth),
       }))
     )(memorizedInfo);
-  }, [dataWidth, setMemoryAct]);
+  }, [dataWidth, memorizedInfo, setMemoryAct]);
 };
 
 export const useTacting = () => {
@@ -187,7 +189,7 @@ export const useReadWriteMemoryDatum = () => {
     if (memoryMode && currentTacts !== 0) {
       setDatum(PIN_STATE.OFF.repeat(dataWidth));
     }
-  }, [memoryMode]);
+  }, [currentTacts, dataWidth, memoryMode, setDatum]);
 
   // update datum in memory if address is already selected
   useEffect(() => {
@@ -200,24 +202,14 @@ export const useReadWriteMemoryDatum = () => {
     ) {
       setDatumInMemoryAct(datum, `${selectedRow}${selectedCol}`);
     }
-  }, [currentTacts, selectedCol, selectedRow, datum, isEnabled, setDatumInMemoryAct]);
+  }, [currentTacts, selectedCol, selectedRow, datum, isEnabled, setDatumInMemoryAct, memoryMode]);
 
   // read datum from memory if address is already selected
   useEffect(() => {
     if (selectedRow && selectedCol && memoryMode === MEMORY_MODE.READ && currentTacts === 0) {
       readDatumFromMemoryAct(address);
     }
-  }, [
-    currentTacts,
-    memoryMode,
-    memorizedInfo,
-    address,
-    selectedRow,
-    selectedCol,
-    datum,
-    isEnabled,
-    readDatumFromMemory,
-  ]);
+  }, [currentTacts, memoryMode, memorizedInfo, address, selectedRow, selectedCol, datum, isEnabled, readDatumFromMemoryAct]);
 
   useEffect(() => {
     if (!currentTacts && (!isRasCasEnabled || !isRas) && casAddr) {
@@ -226,5 +218,5 @@ export const useReadWriteMemoryDatum = () => {
     if (!currentTacts && (!isRasCasEnabled || isRas) && rasAddr) {
       setSelectedRowInMemoryAct(rasAddr);
     }
-  }, [isRasCasEnabled, isRas, casAddr, rasAddr, currentTacts, setSelectedRowInMemoryAct]);
+  }, [isRasCasEnabled, isRas, casAddr, rasAddr, currentTacts, setSelectedRowInMemoryAct, setSelectedColInMemoryAct]);
 };

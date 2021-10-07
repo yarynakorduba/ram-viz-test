@@ -4,9 +4,6 @@
   "private": true,
   "homepage": "http://gitname.github.io/ram-viz",
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
     "node-sass": "^4.14.1",
     "ramda": "^0.27.0",
     "react": "^16.13.1",
@@ -24,9 +21,6 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [

@@ -1,0 +1,17 @@
+{
+  "extends": "react-app",
+  "ignorePatterns": ["node_modules", "build/*"],
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "pathGroups": [
+          {
+            "pattern": "~/**",
+            "group": "external"
+          }
+        ]
+      }
+    ]
+  }
+}

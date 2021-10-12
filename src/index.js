@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import RamVisualization from "./components/RamVisualization";
+import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 import "./commonStyles/index.scss";
@@ -10,7 +10,7 @@ import store from "./store";
 
 ReactDOM.render(
   <Provider store={store}>
-    <RamVisualization />
+    <App />
   </Provider>,
   document.getElementById("root")
 );

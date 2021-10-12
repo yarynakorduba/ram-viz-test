@@ -1,25 +1,21 @@
-.RamVisualization {
-  padding: 2rem 6.25rem;
-
+.RAMVisualization {
   &__caption {
     display: flex;
+    align-items: baseline;
+    padding: 2rem 1rem 1rem 0;
   }
 
   &__header {
     color: var(--text-primary);
-    margin-bottom: 2.25rem;
-    margin-right: 1rem;
+    margin: 0 2rem 0 0;
   }
-  &__visualization {
-    display: flex;
-  }
-  &__visualizationSettings {
-    min-width: 15rem;
-  }
-  &__memory {
+
+  &__memory,
+  &__content {
     display: flex;
   }
   &__notes {
+    flex-basis: 100%;
     margin-top: 1.25rem;
     font-size: 0.75rem;
     color: var(--text-primary);

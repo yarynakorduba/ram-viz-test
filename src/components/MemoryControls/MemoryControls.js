@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useAction } from "../../hooks/reactRedux.hks";
 
-import { useReadWriteMemoryDatum, useControlMemoryDatumWidth } from '../../hooks/memoryView.hks';
+import { useReadWriteMemoryDatum, useControlMemoryDatumWidth } from "../../hooks/memoryView.hks";
 import BEM from "../../helpers/BEM";
 import ToggleButtons from "../ToggleButtons";
 import { setIsPinNotationClassical } from "../../redux/actions";
@@ -11,7 +11,6 @@ import DataControls from "./DataControls";
 import AddressControls from "./AddressControls";
 import StateControls from "./StateControls";
 import ClockControls from "./ClockControls";
-
 
 import "./MemoryControls.scss";
 

@@ -189,7 +189,7 @@ export const useReadWriteMemoryDatum = () => {
     if (memoryMode && currentTacts !== 0) {
       setDatum(PIN_STATE.OFF.repeat(dataWidth));
     }
-  }, [currentTacts, dataWidth, memoryMode, setDatum]);
+  }, [memoryMode]);
 
   // update datum in memory if address is already selected
   useEffect(() => {

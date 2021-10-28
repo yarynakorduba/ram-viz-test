@@ -1,10 +1,10 @@
+import { path } from "ramda";
 import {
   SET_IS_PIN_NOTATION_CLASSICAL,
   SET_IS_TACTING_ENABLED,
   SET_MEMORY_DISPLAY_TYPE,
   SET_IS_RAS_CAS_ENABLED,
 } from "../actions";
-import { path } from "ramda";
 
 const initialState = {
   isPinsNotationClassical: false,

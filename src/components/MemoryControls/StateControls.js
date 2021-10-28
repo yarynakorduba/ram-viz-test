@@ -1,9 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import Pins from "../PinsBlock";
 import BEM from "../../helpers/BEM";
 import { useAction } from "../../hooks/reactRedux.hks";
 import { setPins } from "../../redux/actions";
-import { useSelector } from "react-redux";
 import { selectMemoryMode, selectEnabled } from "../../redux/reducers/pinsInfo.red";
 import { MEMORY_MODE, MEMORY_STATE, PINS } from "../../helpers/consts";
 

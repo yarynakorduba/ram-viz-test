@@ -1,3 +1,4 @@
+import { path, update } from "ramda";
 import {
   SET_MEMORY,
   WRITE_DATUM_IN_MEMORY,
@@ -5,7 +6,6 @@ import {
   SET_SELECTED_ROW_IN_MEMORY,
   SET_SELECTED_COL_IN_MEMORY,
 } from "../actions";
-import { path, update } from "ramda";
 
 const initialState = {
   memoryArray: new Array(16).fill({ datum: "0000", isDirty: false }),

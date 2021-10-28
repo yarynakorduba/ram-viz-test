@@ -109,4 +109,30 @@
     display: block;
     padding: 15px 0 1rem 0;
   }
+
+  &__rangeWrapper {
+    position: relative;
+    font-size: 0.75rem;
+    &_data {
+      &:before {
+        content: "1 bit";
+      }
+    }
+    &_address {
+      &:before {
+        content: "2 bits";
+      }
+    }
+    &:before {
+      position: absolute;
+      left: 0px;
+      top: 32px;
+    }
+    &:after {
+      content: "8 bits";
+      position: absolute;
+      right: 0px;
+      top: 32px;
+    }
+  }
 }

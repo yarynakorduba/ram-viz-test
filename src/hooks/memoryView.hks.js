@@ -132,7 +132,7 @@ export const useControlMemoryDatumWidth = () => {
         datum: cell.datum.padStart(dataWidth, PIN_STATE.OFF).slice(-dataWidth),
       }))
     )(memorizedInfo);
-  }, [dataWidth, memorizedInfo, setMemoryAct]);
+  }, [dataWidth, setMemoryAct]);
 };
 
 export const useTacting = () => {
@@ -189,7 +189,7 @@ export const useReadWriteMemoryDatum = () => {
     if (memoryMode && currentTacts !== 0) {
       setDatum(PIN_STATE.OFF.repeat(dataWidth));
     }
-  }, [currentTacts, dataWidth, memoryMode, setDatum]);
+  }, [memoryMode]);
 
   // update datum in memory if address is already selected
   useEffect(() => {
@@ -209,7 +209,17 @@ export const useReadWriteMemoryDatum = () => {
     if (selectedRow && selectedCol && memoryMode === MEMORY_MODE.READ && currentTacts === 0) {
       readDatumFromMemoryAct(address);
     }
-  }, [currentTacts, memoryMode, memorizedInfo, address, selectedRow, selectedCol, datum, isEnabled, readDatumFromMemoryAct]);
+  }, [
+    currentTacts,
+    memoryMode,
+    memorizedInfo,
+    address,
+    selectedRow,
+    selectedCol,
+    datum,
+    isEnabled,
+    readDatumFromMemoryAct,
+  ]);
 
   useEffect(() => {
     if (!currentTacts && (!isRasCasEnabled || !isRas) && casAddr) {

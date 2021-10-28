@@ -124,16 +124,20 @@ const Memory = () => {
             )}
             <g>
               {renderMemoryView()}
-              <Frame
-                measures={colMeasures}
-                coords={isShowSelectedCol ? selectedColCoords : preselectedColCoords}
-                isShowSelected={isShowSelectedCol}
-              />
-              <Frame
-                measures={rowMeasures}
-                coords={isShowSelectedRow ? selectedRowCoords : preselectedRowCoords}
-                isShowSelected={isShowSelectedRow}
-              />
+              {displayType === "matrix" && (
+                <>
+                  <Frame
+                    measures={colMeasures}
+                    coords={isShowSelectedCol ? selectedColCoords : preselectedColCoords}
+                    isShowSelected={isShowSelectedCol}
+                  />
+                  <Frame
+                    measures={rowMeasures}
+                    coords={isShowSelectedRow ? selectedRowCoords : preselectedRowCoords}
+                    isShowSelected={isShowSelectedRow}
+                  />
+                </>
+              )}
             </g>
           </g>
         </svg>

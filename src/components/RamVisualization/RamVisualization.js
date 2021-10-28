@@ -16,9 +16,7 @@ function RAMVisualization() {
         <VisualizationSettings />
       </div>
       <div className={b("visualization")}>
-        <div className={b("pins")}>
-          <MemoryControls />
-        </div>
+        <div className={b("pins")}><MemoryControls /></div>
         <div className={b("memory")}>
           <Memory />
         </div>

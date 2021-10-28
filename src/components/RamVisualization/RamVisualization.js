@@ -1,14 +1,14 @@
 import React from "react";
 import Memory from "../Memory";
 import BEM from "../../helpers/BEM";
-
-import "./RamVisualization.scss";
 import MemoryControls from "../MemoryControls";
 import VisualizationSettings from "../VisualizationSettings";
 
-const b = BEM("RamVisualization");
+import "./RAMVisualization.scss";
 
-function RamVisualization() {
+const b = BEM("RAMVisualization");
+
+function RAMVisualization() {
   return (
     <div className={b()}>
       <div className={b("caption")}>
@@ -31,4 +31,4 @@ function RamVisualization() {
   );
 }
 
-export default RamVisualization;
+export default RAMVisualization;

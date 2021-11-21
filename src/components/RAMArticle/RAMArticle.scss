@@ -1,0 +1,61 @@
+.RAMArticle {
+  margin: auto;
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.65;
+
+  &__heading {
+    max-width: 900px;
+    margin: auto;
+    &_primary {
+      padding: 2rem 0 2rem 0;
+      font-size: 2.25rem;
+    }
+    &_secondary {
+      padding: 1.5rem 0 1.5rem 0;
+      font-size: 1.75rem;
+    }
+  }
+
+  &__paragraph {
+    max-width: 900px;
+    margin: auto;
+  }
+
+  &__schema {
+    max-width: calc(900px - 8rem);
+    width: auto;
+    max-width: inherit;
+    padding: 2rem 4rem;
+    margin: auto;
+    display: block;
+    &_cellBlock {
+      width: 450px;
+      padding: 1.5rem 10rem 1.5rem 2rem;
+    }
+    &_cellCircuit {
+      width: 450px;
+    }
+    &_memoryBlocks {
+      padding: 1.5rem 6rem 1.5rem 4rem;
+      max-width: calc(900px - 10rem);
+    }
+    &_memoryBank {
+      width: 450px;
+      padding: 1.5rem 10rem 1.5rem 2rem;
+    }
+  }
+
+  &__topic {
+    padding: 2rem 0 3rem 0;
+    &_introduction {
+      background-color: #fdfce5;
+    }
+    &_clockTimings {
+      background-color: #f1f9f9;
+    }
+    &_rasCas {
+      background-color: #f9f3df;
+    }
+  }
+}

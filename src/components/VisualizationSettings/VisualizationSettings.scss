@@ -1,22 +1,15 @@
 .VisualizationSettings {
   display: flex;
 
-  &__tactingInput {
-    height: 1.5rem;
-    width: 1.5rem;
-    margin-right: 0.125rem;
-    background: transparent;
-  }
-
-  &__pinNotationInput,
+  &__tactingInput,
   &__rasCasInput {
     height: 1.5rem;
     width: 1.5rem;
+    margin-right: 0.25rem;
     margin-left: 1.5rem;
-    margin-right: 0.125rem;
+    background: transparent;
   }
 
-  &__pinNotation,
   &__tacting,
   &__rasCas {
     color: var(--text-primary);

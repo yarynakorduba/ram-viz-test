@@ -3,13 +3,17 @@
   font-weight: 400;
   font-size: 1.125rem;
   line-height: 1.65;
+  color: rgba(0, 0, 0, 0.7);
 
   &__heading {
     max-width: 900px;
     margin: auto;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.85);
+
     &_primary {
       padding: 2rem 0 2rem 0;
-      font-size: 2.25rem;
+      font-size: 2.3rem;
     }
     &_secondary {
       padding: 1.5rem 0 1.5rem 0;
@@ -49,13 +53,34 @@
   &__topic {
     padding: 2rem 0 3rem 0;
     &_introduction {
-      background-color: #fdfce5;
+      background-color: #f3f0d7;
     }
     &_clockTimings {
       background-color: #f1f9f9;
     }
     &_rasCas {
-      background-color: #f9f3df;
+      background-color: #f5f3ec;
+    }
+  }
+
+  &__preface {
+    background-color: #deedf0;
+    padding: 3rem 0 5rem 0;
+  }
+
+  &__contents {
+    max-width: 900px;
+    margin: auto;
+  }
+  &__topicRef {
+    display: block;
+    color: var(--text-primary);
+    line-height: 2;
+    &:before {
+      float: left;
+      margin-right: 5px;
+      content: "→ ";
+      text-decoration: none;
     }
   }
 }

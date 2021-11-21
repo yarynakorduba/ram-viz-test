@@ -15,8 +15,27 @@ const b = BEM("RAMArticle");
 const RAMArticle = () => {
   return (
     <div className={b()}>
+      <section className={b("preface")}>
+        <h1 className={b("heading", ["primary"])}>Random Access Memory [RAM]</h1>
+        <section className={b("contents")}>
+          <a className={b("topicRef")} href="#understandingRAM">
+            Understanding RAM
+          </a>
+          <a className={b("topicRef")} href="#clockTimingsChapter">
+            Clock Timings
+          </a>
+          <a className={b("topicRef")} href="#rasCasChapter">
+            RAS and CAS
+          </a>
+          <a className={b("topicRef")} href="#playground">
+            Directly to RAM Playground
+          </a>
+        </section>
+      </section>
       <section className={b("topic", ["introduction"])}>
-        <h1 className={b("heading",  ["primary"])}>Random Access Memory [RAM]</h1>
+        <h2 id="understandingRAM" className={b("heading", ["secondary"])}>
+          Understanding RAM
+        </h2>
         <p className={b("paragraph")}>
           RAM (Random Access Memory) is a high-speed storage that computers utilize to temporarily store and access the
           working data. Each application we run on our computer requires some amount of temporary memory to operate
@@ -78,8 +97,8 @@ const RAMArticle = () => {
         <img src={MemoryBlocks} className={b("schema", ["memoryBlocks"])} />
         <p className={b("paragraph")}>
           Instead of thinking of it as a series of individual memory modules and circuits, we will move to another level
-          of abstraction and think of it as a uniform bank of addressable memory, which can store 2^M words of the
-          length N bit, where M is the width of the address bus and N is the width of the data bus.
+          of abstraction and think of it as a uniform bank of addressable memory, which can store 2<sup>M</sup> words of
+          the length N bit, where M is the width of the address bus and N is the width of the data bus.
         </p>
         <img src={MemoryBank} className={b("schema", ["memoryBank"])} />
         <p className={b("paragraph")}>
@@ -90,27 +109,31 @@ const RAMArticle = () => {
         </p>
       </section>
       <section className={b("topic", ["clockTimings"])}>
-        <h2 className={b("heading", ["secondary"])}>Clock Timings</h2>
+        <h2 id="clockTimingsChapter" className={b("heading", ["secondary"])}>
+          Clock Timings
+        </h2>
         <p className={b("paragraph")}>
           Of course, passing of the information from CPU into RAM and vice versa is not executed immediately. It takes
           some time to send the information at a certain speed through the wires and read / write it to the memory. The
-          delay which occurs in the data transmission as the data moves between CPU and RAM is called RAM latency [0].
-          RAM latency is measured in terms of memory bus clock cycles. A clock cycle is a pulse used to synchronize the
+          delay which occurs in the data transmission as the data moves between CPU and RAM is called RAM latency. RAM
+          latency is measured in terms of memory bus clock cycles. A clock cycle is a pulse used to synchronize the
           operations of the components of a CPU and other parts of the computer, such as a memory. The fewer clock
           cycles, the lower the latency. The lower the latency, the better. The speed at which the CPU or the memory can
-          respond to the clock cycles is called its clock speed and is measured in hertz (Hz)[1]. One Hz equals to one
+          respond to the clock cycles is called its clock speed and is measured in hertz (Hz). One Hz equals to one
           cycle per second. The number of cycles per second depends on the specific hardware and is defined by its
           producers (you can find this information on the chips documentation). Today's personal computers run at a
-          clock speed of several gigahertz [2].
+          clock speed of several gigahertz.
         </p>
         <p className={b("paragraph")}>
           The type of RAM which has its operations orchestrated by an externally supplied clock signal is called SDRAM
-          (Synchronous Dynamic random-access memory) [3]. So there is one more additional clock wire, which can either
+          (Synchronous Dynamic random-access memory). So there is one more additional clock wire, which can either
           supply 1 or 0 to indicate the constant change of clock cycles.
         </p>
       </section>
       <section className={b("topic", ["rasCas"])}>
-        <h2 className={b("heading", ["secondary"])}>RAS and CAS</h2>
+        <h2 id="rasCasChapter" className={b("heading", ["secondary"])}>
+          RAS and CAS
+        </h2>
         <p className={b("paragraph")}>
           To this point, we were mainly talking about the memory address bus as a group of wires, which pass the index
           of the memory location in the binary format. But, in fact, similar to the matrix, memory is organized into a
@@ -131,7 +154,7 @@ const RAMArticle = () => {
           Access Strobe) and CAS (Column Access Strobe). When data is read or written into memory, the CPU activates the
           RAS line to specify the row of the desired location, and then, after some number of tacts, activates the CAS
           line to specify the column. Combined, the two signals give us the complete location address in DRAM, and only
-          after that the data is actually read or written [4].
+          after that the data is actually read or written.
         </p>
         <img src={MemoryBankRasCas} className={b("schema", ["memoryBank"])} />
       </section>

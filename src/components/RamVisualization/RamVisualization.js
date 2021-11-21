@@ -11,7 +11,7 @@ const b = BEM("RAMVisualization");
 
 const RAMVisualization = () => {
   return (
-    <div className={b()}>
+    <div id="playground" className={b()}>
       <div className={b("container")}>
         <header className={b("caption")}>
           <h2>RAM Playground</h2>

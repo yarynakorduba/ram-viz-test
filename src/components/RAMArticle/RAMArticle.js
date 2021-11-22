@@ -144,7 +144,7 @@ const RAMArticle = () => {
         </p>
         <img src={MemoryBankRowCol} className={b("schema", ["memoryBank"])} />
         <p className={b("paragraph")}>
-          However, let us suppose that while we need 8 address bits, and 8 address lines is too much for us for some
+          However, let us suppose that while we need 8 address bits, 8 address lines is too much for us for some
           reason. How can we optimise this? Instead of having 8 wires passing the whole address to the memory bank
           simultaneously, we can make use of only 4 address wires to first send 4 bits as a row number, and then using
           the same wires send 4 bits as a column number.

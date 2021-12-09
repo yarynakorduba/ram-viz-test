@@ -74,13 +74,18 @@
   }
   &__topicRef {
     display: block;
-    color: var(--text-primary);
+    width: fit-content;
+    color: var(--cta);
     line-height: 2;
+    letter-spacing: 0.04em;
     &:before {
       float: left;
       margin-right: 5px;
       content: "→ ";
       text-decoration: none;
+    }
+    &_emphasised {
+      font-weight: bold;
     }
   }
 }

@@ -4,7 +4,8 @@
 
   // background-color: #f5f3ec;
   &__container {
-    max-width: 1200px;
+    max-width: 1400px;
+    width: 95%;
     margin: auto;
   }
   &__caption {
@@ -19,9 +20,19 @@
   }
 
   &__memory,
-  &__content {
+  &__content,
+  &__memoryCircuit {
     display: flex;
   }
+
+  &__main {
+    flex-basis: 50%;
+  }
+  &__howTo {
+    padding-left: 3rem;
+    flex: 1 1 25%;
+  }
+
   &__notes {
     flex-basis: 100%;
     margin-top: 1.25rem;

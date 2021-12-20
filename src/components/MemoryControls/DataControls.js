@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+
 import { useAction } from "../../hooks/reactRedux.hks";
 import { setPinsTypeWidth, setPins } from "../../redux/actions";
 import { selectData, selectDataWidth, selectMemoryMode } from "../../redux/reducers/pinsInfo.red";
@@ -32,14 +33,16 @@ const DataControls = () => {
         </div>
         <div>Decimal: {parseInt(datum, 2)}</div>
         <div className={b("bitsWidth")}>width: {dataLength} bits</div>
-        <input
-          name="dataLength"
-          type="range"
-          min={1}
-          max={8}
-          defaultValue={dataLength}
-          onInput={handleInputDataLength}
-        />
+        <div className={b("rangeWrapper", ["data"])}>
+          <input
+            name="dataLength"
+            type="range"
+            min={1}
+            max={8}
+            defaultValue={dataLength}
+            onInput={handleInputDataLength}
+          />
+        </div>
       </label>
       <Pins binaryData={datum} setBinaryData={setDatum} isDisabled={memoryMode === MEMORY_MODE.READ} />
     </div>

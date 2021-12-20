@@ -49,15 +49,17 @@ export const AddressControls = () => {
         <div>Address: {addressPins}</div>
         <div>Decimal: {parseInt(addressPins, 2)}</div>
         <div className={b("bitsWidth")}>width: {addressLength} bits</div>
-        <input
-          name="addressLength"
-          type="range"
-          min={2}
-          max={8}
-          step={2}
-          defaultValue={addressLength}
-          onInput={handleInputAddressLength}
-        />
+        <div className={b("rangeWrapper", ["address"])}>
+          <input
+            name="addressLength"
+            type="range"
+            min={2}
+            max={8}
+            step={2}
+            defaultValue={addressLength}
+            onInput={handleInputAddressLength}
+          />
+        </div>
       </label>
       <div className={b("addressPins")}>
         {!isRasCasEnabled && <Pins binaryData={addressPins} setBinaryData={handleSetAddress} />}

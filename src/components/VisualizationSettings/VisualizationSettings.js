@@ -31,7 +31,7 @@ const VisualizationSettings = () => {
           checked={isTactingEnabled}
           onChange={() => setIsTactingEnabledAct(!isTactingEnabled)}
         />
-        Tacting
+        Manual clock
       </label>
       <label className={b("rasCas")}>
         <input

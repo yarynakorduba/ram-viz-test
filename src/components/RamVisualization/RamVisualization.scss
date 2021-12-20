@@ -1,25 +1,40 @@
 .RAMVisualization {
-  padding: 2rem 6.25rem;
+  padding: 2rem 4rem 4rem 4rem;
+  background-color: #fdfce5;
 
+  // background-color: #f5f3ec;
+  &__container {
+    max-width: 1400px;
+    width: 95%;
+    margin: auto;
+  }
   &__caption {
     display: flex;
+    align-items: baseline;
+    padding-bottom: 1rem;
   }
 
   &__header {
     color: var(--text-primary);
-    margin-bottom: 2.25rem;
-    margin-right: 1rem;
+    margin: 0 2rem 0 0;
   }
-  &__visualization {
+
+  &__memory,
+  &__content,
+  &__memoryCircuit {
     display: flex;
   }
-  &__visualizationSettings {
-    min-width: 15rem;
+
+  &__main {
+    flex-basis: 50%;
   }
-  &__memory {
-    display: flex;
+  &__howTo {
+    padding-left: 3rem;
+    flex: 1 1 25%;
   }
+
   &__notes {
+    flex-basis: 100%;
     margin-top: 1.25rem;
     font-size: 0.75rem;
     color: var(--text-primary);

@@ -1,11 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;600&display=swap");
-@import "./rangeInput.scss";
+@import "./input.scss";
 
 :root {
   --black: black;
   --cta: #488dff;
 
-  --background-primary: #ffffff;
+  --background-primary: white;
+  --background-secondary: #fffdf2;
 
   --text-primary: #515e6b;
   --text-secondary: #505e6b5e;
@@ -13,15 +13,16 @@
 
   --box-shadow-primary: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "PT Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+input {
+  background: transparent;
 }

@@ -15,6 +15,6 @@ export const usePrevious = (value, initialValue = null) => {
   const prev = useRef(initialValue);
   useEffect(() => {
     prev.current = value;
-  });
+  }, [value]);
   return prev.current;
 };

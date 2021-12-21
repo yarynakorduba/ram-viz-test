@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/ram-viz-test/static/css/main.f2073a17.chunk.css",
+    "main.js": "/ram-viz-test/static/js/main.bfc68b97.chunk.js",
+    "main.js.map": "/ram-viz-test/static/js/main.bfc68b97.chunk.js.map",
+    "runtime-main.js": "/ram-viz-test/static/js/runtime-main.e94df4a6.js",
+    "runtime-main.js.map": "/ram-viz-test/static/js/runtime-main.e94df4a6.js.map",
+    "static/js/2.365dcf98.chunk.js": "/ram-viz-test/static/js/2.365dcf98.chunk.js",
+    "static/js/2.365dcf98.chunk.js.map": "/ram-viz-test/static/js/2.365dcf98.chunk.js.map",
+    "index.html": "/ram-viz-test/index.html",
+    "precache-manifest.88c477dc1606de31e76630c400c063cd.js": "/ram-viz-test/precache-manifest.88c477dc1606de31e76630c400c063cd.js",
+    "service-worker.js": "/ram-viz-test/service-worker.js",
+    "static/css/main.f2073a17.chunk.css.map": "/ram-viz-test/static/css/main.f2073a17.chunk.css.map",
+    "static/js/2.365dcf98.chunk.js.LICENSE.txt": "/ram-viz-test/static/js/2.365dcf98.chunk.js.LICENSE.txt",
+    "static/media/memoryBank.svg": "/ram-viz-test/static/media/memoryBank.23c42a43.svg",
+    "static/media/memoryBankRasCas.svg": "/ram-viz-test/static/media/memoryBankRasCas.dc6a5e8d.svg",
+    "static/media/memoryBankRowCol.svg": "/ram-viz-test/static/media/memoryBankRowCol.4feac339.svg",
+    "static/media/memoryBlock.svg": "/ram-viz-test/static/media/memoryBlock.7657086e.svg",
+    "static/media/memoryBlocks.svg": "/ram-viz-test/static/media/memoryBlocks.31663eda.svg",
+    "static/media/memoryCellCircuit.svg": "/ram-viz-test/static/media/memoryCellCircuit.375091a1.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e94df4a6.js",
+    "static/js/2.365dcf98.chunk.js",
+    "static/css/main.f2073a17.chunk.css",
+    "static/js/main.bfc68b97.chunk.js"
+  ]
+}

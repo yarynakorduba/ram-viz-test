@@ -2,7 +2,7 @@
   "name": "ram",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://gitname.github.io/ram-viz",
+  "homepage": "http://gitname.github.io/ram-viz-test",
   "dependencies": {
     "node-sass": "^4.14.1",
     "ramda": "^0.27.0",

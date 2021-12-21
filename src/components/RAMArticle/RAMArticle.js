@@ -1,6 +1,8 @@
 import React from "react";
 import BEM from "../../helpers/BEM";
 
+import ArticleSection from "../ArticleSection";
+
 import MemoryCellCircuit from "../../icons/memoryCellCircuit.svg";
 import MemoryBlock from "../../icons/memoryBlock.svg";
 import MemoryBlocks from "../../icons/memoryBlocks.svg";
@@ -32,7 +34,7 @@ const RAMArticle = () => {
           </a>
         </section>
       </section>
-      <section className={b("topic", ["introduction"])}>
+      <ArticleSection name="introduction" displayedName={"Understanding RAM"}>
         <h2 id="understandingRAM" className={b("heading", ["secondary"])}>
           Understanding RAM
         </h2>
@@ -107,8 +109,8 @@ const RAMArticle = () => {
           represents a number in a range from 0 to 255 in decimal view. As there are 8 data wires, each location can
           keep 8 bits of data (1 byte). The data range is the same, from 0000 0000 to 1111 1111 (from 0 to 255).
         </p>
-      </section>
-      <section className={b("topic", ["clockTimings"])}>
+      </ArticleSection>
+      <ArticleSection name="clockTimings" displayedName={"Clock Timings"}>
         <h2 id="clockTimingsChapter" className={b("heading", ["secondary"])}>
           Clock Timings
         </h2>
@@ -129,8 +131,8 @@ const RAMArticle = () => {
           (Synchronous Dynamic random-access memory). So there is one more additional clock wire, which can either
           supply 1 or 0 to indicate the constant change of clock cycles.
         </p>
-      </section>
-      <section className={b("topic", ["rasCas"])}>
+      </ArticleSection>
+      <ArticleSection name="rasCas" displayedName={"RAS and CAS"}>
         <h2 id="rasCasChapter" className={b("heading", ["secondary"])}>
           RAS and CAS
         </h2>
@@ -157,7 +159,7 @@ const RAMArticle = () => {
           after that the data is actually read or written.
         </p>
         <img src={MemoryBankRasCas} className={b("schema", ["memoryBank"])} />
-      </section>
+      </ArticleSection>
     </div>
   );
 };

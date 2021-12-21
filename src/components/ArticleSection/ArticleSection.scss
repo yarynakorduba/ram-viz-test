@@ -1,0 +1,25 @@
+.ArticleSection {
+  padding: 2rem 0 3rem 0;
+  &__introduction {
+    background-color: #f3f0d7;
+  }
+  &__clockTimings {
+    background-color: #f1f9f9;
+  }
+  &__rasCas {
+    background-color: #f5f3ec;
+  }
+  &__content {
+    max-width: 900px;
+    margin: auto;
+  }
+  &__confirmation {
+    margin: 2rem 0 2rem 0;
+    display: inline-block;
+  }
+  &__checkbox {
+    margin-right: 1rem;
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+}

@@ -65,8 +65,30 @@ export const AddressControls = () => {
         {!isRasCasEnabled && <Pins binaryData={addressPins} setBinaryData={handleSetAddress} />}
         {isRasCasEnabled && (
           <>
-            {Number(ras) ? <Pins binaryData={addressRow} setBinaryData={setAddressRowPinsAct} /> : null}
-            {Number(cas) ? <Pins binaryData={addressColumn} setBinaryData={setAddressColPinsAct} /> : null}
+            {Number(ras) ? (
+              <div className={b("rowAddress")}>
+                <span className={b("rowAddressLabel", [ras === PIN_STATE.ON && "active"])}>
+                  write
+                  <br />
+                  row
+                  <br />
+                  address
+                </span>
+                <Pins binaryData={addressRow} setBinaryData={setAddressRowPinsAct} />
+              </div>
+            ) : null}
+            {Number(cas) ? (
+              <div className={b("colAddress")}>
+                <span className={b("colAddressLabel", [cas === PIN_STATE.ON && "active"])}>
+                  write
+                  <br />
+                  col
+                  <br />
+                  address
+                </span>
+                <Pins binaryData={addressColumn} setBinaryData={setAddressColPinsAct} />
+              </div>
+            ) : null}
             <div className={b("ras")}>
               <span className={b("rasLabel", [ras === PIN_STATE.ON && "active"])}>ras</span>
               <Pins binaryData={ras} isDisabled />

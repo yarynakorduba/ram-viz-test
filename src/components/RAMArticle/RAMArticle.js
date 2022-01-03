@@ -154,7 +154,7 @@ const RAMArticle = () => {
         <p className={b("paragraph")}>
           That's why, besides the clock wire, the RAM circuit has two additional control wires. These are RAS (Row
           Access Strobe) and CAS (Column Access Strobe). When data is read or written into memory, the CPU activates the
-          RAS line to specify the row of the desired location, and then, after some number of tacts, activates the CAS
+          RAS line to specify the row of the desired location, and then, after some number of cycles, activates the CAS
           line to specify the column. Combined, the two signals give us the complete location address in DRAM, and only
           after that the data is actually read or written.
         </p>

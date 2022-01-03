@@ -27,7 +27,7 @@ const ClockControls = () => {
     <div className={b("clockPinBlock", [isTactingEnabled ? "visible" : "hidden"])}>
       <label className={b("clockLabel")}>
         <div onClick={handleClock} className={b("clock", [clock === PIN_STATE.ON && "enabled"])}>
-          Clock <span className={b("currentTacts")}>({currentTacts} tacts left)</span>
+          Clock <span className={b("currentTacts")}>({currentTacts} cycles left)</span>
         </div>
         <div className={b("tacts")}>
           <input
@@ -36,7 +36,7 @@ const ClockControls = () => {
             value={tacts}
             onChange={(ev) => setTactsAct(ev.target.value)}
           />{" "}
-          Tacts <span className={b("tactsNote")}>determined by the hardware producer</span>
+          Cycles <span className={b("tactsNote")}>determined by the hardware producer</span>
         </div>
       </label>
       <Pins binaryData={clock} setBinaryData={handleClock} />

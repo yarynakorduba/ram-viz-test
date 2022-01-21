@@ -136,7 +136,6 @@ export const useControlMemoryDatumWidth = () => {
 };
 
 export const useTacting = () => {
-  // const setCurrentTactsAct = useAction(setCurrentTacts);
   const setClockPinAct = useAction(setClockPin);
   const clock = useSelector(selectClock);
   const currentTacts = useSelector(selectCurrentTacts);

@@ -69,7 +69,7 @@ const pinsInfo = (state = initialState, action) => {
       };
     }
     case SET_TACTS:
-      return { ...state, tacts: payload.tacts, currentTacts: payload };
+      return { ...state, tacts: payload, currentTacts: payload };
 
     case SET_CURRENT_TACTS:
       return { ...state, currentTacts: payload };

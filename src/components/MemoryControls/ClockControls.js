@@ -34,7 +34,7 @@ const ClockControls = () => {
             type="number"
             className={b("tactsNumber")}
             value={tacts}
-            onChange={(ev) => setTactsAct(ev.target.value)}
+            onChange={(ev) => setTactsAct(+ev.target.value)}
           />{" "}
           Cycles <span className={b("tactsNote")}>determined by the hardware producer</span>
         </div>

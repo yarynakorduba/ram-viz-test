@@ -97,11 +97,11 @@ function* updateNumberOfTacts(action) {
   const currentTacts = yield select(selectCurrentTacts);
   const clock = action.payload;
   const isRasCasEnabled = yield select(selectIsRasCasEnabled);
-  const ramLatency = yield select(selectTacts);
   if (clock === PIN_STATE.ON) {
     yield put(setCurrentTacts(currentTacts - 1));
   }
   if (currentTacts === 0 && clock === PIN_STATE.OFF) {
+    const ramLatency = yield select(selectTacts);
     // Reset current tacts to ramLatency, defined by hardware producer
     yield put(setCurrentTacts(ramLatency));
     if (isRasCasEnabled) {
